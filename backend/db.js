@@ -83,11 +83,55 @@ const productSchema = new mongoose.Schema({
 });
 
 
+const onlineCartSchema = new mongoose.Schema({
+    userId:{
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 1
+    },
+    productId: {
+        type: String,
+        unique: false,
+        trim: true,
+        lowercase: true,
+        minLength: 1
+    },
+    productQty: {
+        type: Number,
+        required: true,
+        minLength: 1
+    },
+    productPrice: {
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 1
+    },
+    productName: {
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 1
+    },
+    productDescription:{
+         type:String,
+         required:true,
+         trim:true,
+         minLength: 1
+     }
+},{
+    collection:'Online-Cart' // Specify the collection name here
+});
+
+
 
 const User = mongoose.model('User',userSchema);
 const OnlineProduct = mongoose.model('OnlineProduct',productSchema);
+const OnlineCart = mongoose.model('OnlineCart',onlineCartSchema);
 
 module.exports={
     User,
-    OnlineProduct
+    OnlineProduct,
+    OnlineCart
 };

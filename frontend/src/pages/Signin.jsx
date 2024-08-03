@@ -40,16 +40,20 @@ export const Signin = () => {
   };
 
   return (
-    <div className="signin-container w-full h-full flex flex-col items-center overflow-hidden">
-    
-      <div className="logo p-5 w-full flex justify-center">
-        <Icon icon="tabler:brand-walmart" width="70" color="#FFC120" />
+    <div className=" signin-container w-full h-full flex flex-col items-center overflow-auto ">
+   
+       <div className="logo p-5 w-full flex justify-center ">
+            <Icon icon="tabler:brand-walmart" width="70" color="#FFC120" />
+            </div>
+      <div className=" ">
+        {/* <img src=" " alt=" " srcset="" /> */}
       </div>
-      
-      <div className="signin-content h-screen px-24 pt-18 relative">
-        <div className="text-xl font-bold text-center">
-          <h1>Welcome Back!</h1>
+
+      <div className=" h-full px-24 pt-18 items-center">
+        <div className="text-xl font-semibold text-center">
+        <h1>Welcome Back!</h1>
         </div>
+        
         {error && <div className="text-red-500 text-center">{error}</div>}
         <Inputbox
           label={"Username"}
@@ -61,7 +65,8 @@ export const Signin = () => {
           placeholder={"123456"}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <div className="pt-8">
+
+<div className="pt-8">
           <CustomButton label={"Login to your Account"} onClick={handleSignin} />
           <button
             type="button"
@@ -72,7 +77,8 @@ export const Signin = () => {
           </button>
         </div>
       </div>
-      <div className="background-svg absolute bottom-0 left-0 w-full h-1/2 overflow-hidden">
+     
+<div className="background-svg absolute bottom-0 left-0 w-full h-1/2 overflow-hidden">
         <svg viewBox="0 0 1440 320" fill="#FFC120">
           <path
             d="M0,160L480,80L960,0L1440,160L1440,320L960,240L480,320L0,240Z"
@@ -80,7 +86,7 @@ export const Signin = () => {
           />
         </svg>
       </div>
-
     </div>
   );
 };
+

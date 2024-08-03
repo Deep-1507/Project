@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Inputbox } from "../components/Inputbox";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom"; // Add this import
 import {
   Card,
   CardContent,
@@ -10,32 +9,36 @@ import {
   Grid,
   Container,
   CardActions,
-  Button,
 } from "@mui/material";
 import { CustomButton } from "../components/CustomButton";
 
-export const Dashboard = () => {
+export const Cart = () => {
   const [products, setProducts] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
 
   const token = localStorage.getItem("token");
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/v1/online-products/get-online-products"
+          "http://localhost:3000/api/v1/online-products/getitems-from-onlinecart",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-        setProducts(response.data);
+        setProducts(response.data.CartProducts);
       } catch (error) {
-        enqueueSnackbar("Failed to fetch products", { variant: "error" });
+        enqueueSnackbar("Failed to fetch products from cart", {
+          variant: "error",
+        });
       }
     };
 
     fetchProducts();
-  }, [enqueueSnackbar]);
+  }, [enqueueSnackbar, token]);
 
   const handleAddToCart = async (product) => {
     try {
@@ -60,21 +63,43 @@ export const Dashboard = () => {
     }
   };
 
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/v1/online-products/delete-item/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+     
+      setProducts((prevProducts) => prevProducts.filter((product) => product._id !== id));
+      enqueueSnackbar("Product removed from cart", { variant: "success" });
+    } catch (error) {
+      enqueueSnackbar("Failed to remove product from cart", { variant: "error" });
+    }
+  };
+  
+
   return (
     <Container>
-      <div className="pt-10">
-      <CustomButton
-                  label={"Your Cart"}
-                  onClick={() => {navigate("/online-cart")}}
-                />
-      </div>
-     <div  className="pb-10">
+        <div className="pt-10">
+        <CustomButton
+        label={`Cart: ${products.length}`}
+        onClick={() => handleAddToCart(product)}
+      />
+        </div>
+      
+      <div  className="pb-10">
       <Inputbox
         label={"Search Box"}
         placeholder={"Enter the name of the product you wish to search"}
        
       />
       </div>
+      
       <Grid container spacing={4}>
         {products.map((product) => (
           <Grid item key={product._id} xs={12} sm={6} md={4}>
@@ -95,8 +120,8 @@ export const Dashboard = () => {
               </CardContent>
               <CardActions>
                 <CustomButton
-                  label={"Add to Cart"}
-                  onClick={() => handleAddToCart(product)}
+                  label={"Remove from Cart"}
+                  onClick={() => handleDelete(product._id)} 
                 />
               </CardActions>
             </Card>
