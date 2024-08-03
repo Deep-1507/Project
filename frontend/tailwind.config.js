@@ -10,7 +10,8 @@ export default {
         Anton: ["Anton SC", "sans-serif"], // Add your Google Font here
       },
       colors :{
-        customGreen : "#45EB49"
+          walmartBlue: '#0071CE',
+          walmartYellow: '#FFC120',
       },
       height:{
         '192':'45rem',

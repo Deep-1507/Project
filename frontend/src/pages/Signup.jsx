@@ -1,9 +1,11 @@
 import { CustomButton } from "../components/CustomButton";
 import { Inputbox } from "../components/Inputbox";
 import axios from "axios";
+import {Icon} from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSnackbar } from "notistack";
+import "./Signin.css"; 
 
 export const Signup = () => {
   const [firstName, setFirstname] = useState("");
@@ -46,14 +48,18 @@ export const Signup = () => {
   };
 
   return (
-    <div className="inline-grid grid-cols-2 gap-4 h-screen w-screen items-center">
-      <div className="m-28">
-        <img src="../src/images/Logo.png" alt="Logo" srcset="" />
+    <div className=" signin-container w-full h-full flex flex-col items-center overflow-auto ">
+   
+       <div className="logo p-5 w-full flex justify-center ">
+            <Icon icon="tabler:brand-walmart" width="70" color="#FFC120" />
+            </div>
+      <div className=" ">
+        {/* <img src=" " alt=" " srcset="" /> */}
       </div>
 
-      <div className="bg-gray-100 h-screen px-24 pt-28">
-        <div className="text-3xl font-bold text-center">
-          <h1>Create New Account?</h1>
+      <div className=" h-full px-24 pt-18 items-center">
+        <div className="text-xl font-semibold text-center">
+          <h1> Sign in or create New Account</h1>
         </div>
         <Inputbox
           label={"Username"}
@@ -62,23 +68,25 @@ export const Signup = () => {
             setUsername(e.target.value);
           }}
         />
+        <div className="w-full flex justify-between items-center space-x-8">
         <Inputbox
           label={"First Name"}
-          placeholder={"Deependra"}
+          placeholder={"First name"}
           onChange={(e) => {
             setFirstname(e.target.value);
           }}
         />
         <Inputbox
           label={"Last Name"}
-          placeholder={"Kumar"}
+          placeholder={"Last name"}
           onChange={(e) => {
             setLastname(e.target.value);
           }}
-        />
+        /> </div>
+       
         <Inputbox
           label={"Password"}
-          placeholder={"123456"}
+          placeholder={"Password"}
           onChange={(e) => {
             setPassword(e.target.value);
           }}
@@ -89,11 +97,20 @@ export const Signup = () => {
 
         <button
           type="button"
-          className="w-full h-10 flex justify-center  text-black bg-gray-100 border-2 border-black hover:border-4 hover:border-customGreen focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2"
+          className="border border-gray-500 backdrop-blur-xl text-gray-500 w-full flex items-center justify-center py-4 rounded-full font-bold"
           onClick={() => navigate("/signin")}
         >
-          Alrady a user
+          LOG IN INSTEAD
         </button>
+      </div>
+     
+<div className="background-svg absolute bottom-0 left-0 w-full h-1/2 overflow-hidden">
+        <svg viewBox="0 0 1440 320" fill="#FFC120">
+          <path
+            d="M0,160L480,80L960,0L1440,160L1440,320L960,240L480,320L0,240Z"
+            transform="rotate(180 720 160) translate(0, -160)"
+          />
+        </svg>
       </div>
     </div>
   );

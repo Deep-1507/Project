@@ -1,9 +1,11 @@
 import { CustomButton } from "../components/CustomButton";
 import { Inputbox } from "../components/Inputbox";
 import axios from "axios";
+import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSnackbar } from "notistack";
+import "./Signin.css"; // Ensure you import the CSS file
 
 export const Signin = () => {
   const [username, setUsername] = useState("");
@@ -38,12 +40,14 @@ export const Signin = () => {
   };
 
   return (
-    <div className="inline-grid grid-cols-2 gap-4 h-screen w-screen items-center">
-      <div className="m-28">
-        <img src="../src/images/Logo.png" alt="Logo" />
+    <div className="signin-container w-full h-full flex flex-col items-center overflow-hidden">
+    
+      <div className="logo p-5 w-full flex justify-center">
+        <Icon icon="tabler:brand-walmart" width="70" color="#FFC120" />
       </div>
-      <div className="bg-gray-100 h-screen px-24 pt-40">
-        <div className="text-3xl font-bold text-center">
+      
+      <div className="signin-content h-screen px-24 pt-18 relative">
+        <div className="text-xl font-bold text-center">
           <h1>Welcome Back!</h1>
         </div>
         {error && <div className="text-red-500 text-center">{error}</div>}
@@ -68,6 +72,15 @@ export const Signin = () => {
           </button>
         </div>
       </div>
+      <div className="background-svg absolute bottom-0 left-0 w-full h-1/2 overflow-hidden">
+        <svg viewBox="0 0 1440 320" fill="#FFC120">
+          <path
+            d="M0,160L480,80L960,0L1440,160L1440,320L960,240L480,320L0,240Z"
+            transform="rotate(180 720 160) translate(0, -160)"
+          />
+        </svg>
+      </div>
+
     </div>
   );
 };
