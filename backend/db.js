@@ -30,16 +30,6 @@ const userSchema = new mongoose.Schema({
         trim: true,
         maxLength: 50
     },
-     position:{
-         type:String,
-         required:true,
-         trim:true,
-         maxLength:50
-     },
-     positionseniorityindex:{
-         type:Number,
-         required:true
-     }
 },{
     collection:'users' // Specify the collection name here
 });
@@ -124,14 +114,55 @@ const onlineCartSchema = new mongoose.Schema({
     collection:'Online-Cart' // Specify the collection name here
 });
 
+const storeSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        lowercase: true,
+        minLength: 3,
+        maxLength: 50
+    },
+    password: {
+        type: String,
+        required: true,
+        minLength: 6
+    },
+    firstName: {
+        type: String,
+        required: true,
+        trim: true,
+        maxLength: 50
+    },
+    lastName: {
+        type: String,
+        required: true,
+        trim: true,
+        maxLength: 50
+    },
+     location:{
+         type:String,
+         required:true,
+         trim:true,
+         maxLength:50
+     },
+},{
+    collection:'stores' // Specify the collection name here
+});
+
 
 
 const User = mongoose.model('User',userSchema);
 const OnlineProduct = mongoose.model('OnlineProduct',productSchema);
 const OnlineCart = mongoose.model('OnlineCart',onlineCartSchema);
 
+
+const Stores = mongoose.model('Stores',storeSchema);
+
 module.exports={
     User,
     OnlineProduct,
-    OnlineCart
+    OnlineCart,
+    Stores
 };

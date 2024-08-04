@@ -1,8 +1,26 @@
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
+
+  const handleLogout = () => {
+      
+     
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    enqueueSnackbar("Logout successful", { variant: "success" });
+
+    setTimeout(() => {
+      navigate("/signin");
+    }, 1000);
+
+    
+  };
 
   return (
     <div className="w-full">
@@ -41,7 +59,10 @@ const Navbar = () => {
             <span className="text-white">My Account</span>
           </div>
           <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300">
+            <button onClick={handleLogout}>
             Log out
+            </button>
+            
           </div>
         </div>
       </div>

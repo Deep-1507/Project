@@ -111,6 +111,26 @@ const productBody = zod.object({
   });
 
 
+  router.get("/getitems-from-onlinecart-for-billing", authMiddleware, async (req, res) => {
+    try {
+      // Input validation check
+      const userId = req.query.id;
+      
+      const CartProducts = await OnlineCart.find({ userId });
+  
+      // When both checks are successful, add user to the database
+      res.status(200).json({
+        CartProducts,
+      })
+    } catch (error) {
+      console.error("Error during fetching products from cart:", error);
+      res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  });
+
+  
   router.get("/getitems-from-onlinecart", authMiddleware, async (req, res) => {
     try {
       // Input validation check
@@ -129,6 +149,7 @@ const productBody = zod.object({
       });
     }
   });
+
 
 
   router.delete('/delete-item/:id',authMiddleware, async (req, res) => {

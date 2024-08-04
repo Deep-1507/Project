@@ -8,6 +8,10 @@ import './App.css';
 import { Signup } from "./pages/Signup";
 import { Signin } from "./pages/Signin";
 import { Dashboard } from "./pages/Dashboard";
+import { StoreSignin } from "./pages/StoreSignin";
+import { StoreSignup } from "./pages/StoreSignup";
+import { StoreDashBoard } from "./pages/StoreDashBoard";
+import {BillingPage} from './pages/BillingPage';
 import { Cart } from "./pages/Cart";
 import { SnackbarProvider } from 'notistack';
 // import { Products } from "./pages/Products";
@@ -23,6 +27,10 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/online-cart" element={<Cart />} />
+          <Route path="/store-signin" element={<StoreSignin  />} />
+          <Route path="/store-signup" element={<StoreSignup />} />
+          <Route path="/store-dashboard" element={< StoreDashBoard />} />
+          <Route path="/store-billing-page" element={<BillingPage />} />
           {/* <Route path="/online-products" element={<Products />} /> */}
         </Routes>
       </Router>
