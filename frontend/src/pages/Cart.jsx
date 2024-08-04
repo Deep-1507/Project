@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Inputbox } from "../components/Inputbox";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import Navbar from "../components/Navbar";
 import {
   Card,
   CardContent,
@@ -84,31 +85,21 @@ export const Cart = () => {
   
 
   return (
-    <Container>
-        <div className="pt-10">
-        <CustomButton
-        label={`Cart: ${products.length}`}
-        onClick={() => handleAddToCart(product)}
-      />
-        </div>
-      
-      <div  className="pb-10">
-      <Inputbox
-        label={"Search Box"}
-        placeholder={"Enter the name of the product you wish to search"}
-       
-      />
-      </div>
-      
-      <Grid container spacing={4}>
+    <div className=" ">
+      <Navbar/>
+        <div className="m-4 font-semibold ">
+  <span className="text-2xl text-gray-800">Cart : {products.length} item </span>
+</div>
+<div className="p-8">
+      <Grid container spacing={4} className="ml-5 mr-5">
         {products.map((product) => (
           <Grid item key={product._id} xs={12} sm={6} md={4}>
-            <Card>
+            <Card className="m-3 p-3 ">
               <CardContent>
                 <Typography variant="h5" component="div">
                   {product.productName}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" >
                   {product.productDescription}
                 </Typography>
                 <Typography variant="body1" color="text.primary">
@@ -128,6 +119,7 @@ export const Cart = () => {
           </Grid>
         ))}
       </Grid>
-    </Container>
+      </div>
+      </div>
   );
 };

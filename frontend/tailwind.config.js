@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        Anton: ["Anton SC", "sans-serif"], // Add your Google Font here
+        Anton: ["Anton SC", ,"sans-serif"],
+        sans: ['Open Sans', 'Arial', 'sans-serif'], // Add your Google Font here
       },
       colors :{
           walmartBlue: '#0071CE',

@@ -42,14 +42,14 @@ export const Signin = () => {
   return (
     <div className=" signin-container w-full h-full flex flex-col items-center overflow-auto ">
    
-       <div className="logo p-5 w-full flex justify-center ">
+       <div className="logo p-5 w-full flex justify-center">
             <Icon icon="tabler:brand-walmart" width="70" color="#FFC120" />
             </div>
       <div className=" ">
         {/* <img src=" " alt=" " srcset="" /> */}
       </div>
 
-      <div className=" h-full px-24 pt-18 items-center">
+      <div className=" h-full px-24 pt-18 items-center w-2/5">
         <div className="text-xl font-semibold text-center">
         <h1>Welcome Back!</h1>
         </div>
@@ -86,6 +86,8 @@ export const Signin = () => {
           />
         </svg>
       </div>
+
+      
     </div>
   );
 };

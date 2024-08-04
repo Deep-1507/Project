@@ -3,6 +3,8 @@ import { Inputbox } from "../components/Inputbox";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom"; // Add this import
+import Navbar from "../components/Navbar";
+import "./Signin.css";
 import {
   Card,
   CardContent,
@@ -61,20 +63,11 @@ export const Dashboard = () => {
   };
 
   return (
-    <Container>
-      <div className="pt-10">
-      <CustomButton
-                  label={"Your Cart"}
-                  onClick={() => {navigate("/online-cart")}}
-                />
+    <div className="scrollbar">
+      <div className="mb-3 ">
+      <Navbar/>
       </div>
-     <div  className="pb-10">
-      <Inputbox
-        label={"Search Box"}
-        placeholder={"Enter the name of the product you wish to search"}
-       
-      />
-      </div>
+      <div className="p-8">
       <Grid container spacing={4}>
         {products.map((product) => (
           <Grid item key={product._id} xs={12} sm={6} md={4}>
@@ -103,6 +96,7 @@ export const Dashboard = () => {
           </Grid>
         ))}
       </Grid>
-    </Container>
+      </div>
+    </div>
   );
 };

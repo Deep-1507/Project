@@ -50,7 +50,7 @@ export const Signup = () => {
   return (
     <div className=" signin-container w-full h-full flex flex-col items-center overflow-auto ">
    
-       <div className="logo p-5 w-full flex justify-center ">
+       <div className="logo p-5 w-full flex justify-center">
             <Icon icon="tabler:brand-walmart" width="70" color="#FFC120" />
             </div>
       <div className=" ">
