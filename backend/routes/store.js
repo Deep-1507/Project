@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const zod = require("zod");
-const { User, Stores } = require("../db");
+const { User, Stores, SessionDetails } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 const bcrypt = require("bcrypt");
@@ -173,7 +173,45 @@ router.get("/details", authMiddleware, async (req, res) => {
     console.error("Error fetching store details:", error);
     res.status(500).json({ message: "Server error" });
   }
+}); 
+
+ 
+router.post('/create-session', async (req, res) => {
+  try {
+      // Extract data from request body
+      const { sessionDate, sessionTime, storeId, userId, Items, billingAmount,storeHandlersName,customersName } = req.body;
+
+      // Validate the required fields
+      if (!sessionDate || !sessionTime || !storeId || !userId || !Items || !billingAmount) {
+          return res.status(400).json({ message: 'All fields are required' });
+      }
+
+      // Create a new session document
+      const newSession = new SessionDetails({
+          sessionDate,
+          sessionTime,
+          storeId,
+          userId,
+          Items,
+          billingAmount,
+          storeHandlersName,
+          customersName
+      });
+
+      // Save the document to the database
+      const savedSession = await newSession.save();
+
+      // Respond with the saved session data
+      res.status(201).json(savedSession);
+  } catch (error) {
+      console.error('Error creating session:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
 });
+
+
+
+
 
 
 //update route
@@ -200,30 +238,7 @@ router.get("/details", authMiddleware, async (req, res) => {
 //     })
 // })
 
-router.get("/details", authMiddleware, async (req, res) => {
-  try {
-    const userId = req.userId;
-    const userDetails = await User.findById(userId);
 
-    if (!userDetails) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json({
-      user: {
-        username: userDetails.username,
-        firstName: userDetails.firstName,
-        lastName: userDetails.lastName,
-        _id: userDetails._id,
-        position: userDetails.position,
-        positionseniorityindex: userDetails.positionseniorityindex,
-      },
-    });
-  } catch (error) {
-    console.error("Error fetching user details:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
 
 //Route to send the details of the users to appear on the user's page according to searching
 

@@ -50,6 +50,7 @@ export const Dashboard = () => {
           productPrice: product.productPrice,
           productName: product.productName,
           productDescription: product.productDescription,
+          mode:product.mode
         },
         {
           headers: {
@@ -76,6 +77,9 @@ export const Dashboard = () => {
               <CardContent>
                 <Typography variant="h5" component="div">
                   {product.productName}
+                </Typography>
+                <Typography variant="h5" component="div">
+                  {product.mode}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {product.productDescription}

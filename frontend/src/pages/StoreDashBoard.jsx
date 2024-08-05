@@ -71,7 +71,7 @@ const User = ({ user }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-between border-4 p-4 m-4 hover:bg-yellow-50 rounded-lg transition ease-in-out duration-300 transform hover:scale-105 hover:opacity-75">
+    <div className="flex justify-between  p-8 m-4 shadow-lg hover:bg-yellow-50 rounded-lg transition ease-in-out duration-300 transform hover:scale-105 hover:opacity-75">
       <div className="flex">
         <div className="flex items-center">
           <div className="w-12 h-12 rounded-full bg-walmartYellow flex items-center justify-center">

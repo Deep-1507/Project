@@ -17,7 +17,7 @@ const productBody = zod.object({
   });
 
   //Use Authmiddleware
-  router.post("/create-product", async (req, res) => {
+  router.post("/create-product",authMiddleware, async (req, res) => {
     try {
       // Input validation check
       const result = productBody.safeParse(req.body);
@@ -31,8 +31,9 @@ const productBody = zod.object({
       
   
       // When both checks are successful, add user to the database
-      const Product = await OnlineProduct.create({
-        mode:"online",
+      const Product = await OfflineProduct.create({
+        mode:"offline",
+        storeId:req.userId,
         productId: req.body.productId,
         productQty:  req.body.productQty,
         productPrice:  req.body.productPrice,
@@ -41,8 +42,6 @@ const productBody = zod.object({
       });
   
       
-     
-  
       res.status(201).json({
         message: "Product created successfully",
       });
@@ -54,29 +53,44 @@ const productBody = zod.object({
     }
   });
 
-  router.get("/get-online-products", async (req, res) => {
-    try {
-        const Products = await OnlineProduct.find();
-        res.status(200).json(Products);
-      } catch (error) {
-        console.error("Error during fetching products:", error);
-        res.status(500).json({
-          message: "Internal server error",
-        });
-      }
-  });
 
 
-  const CartBody = zod.object({
-    mode:zod.string(),
-    productId: zod.string(),
-    productQty: zod.number(),
-    productPrice: zod.string(),
-    productName: zod.string().min(1),
-    productDescription: zod.string().min(1)
+  const querySchema = zod.object({
+    // productId: zod.string().optional(),
+    productName: zod.string().optional()
   });
   
-  router.post("/add-to-cart-online", authMiddleware, async (req, res) => {
+  router.get("/get-offline-products", async (req, res) => {
+    try {
+      const validatedQuery = querySchema.safeParse(req.query);
+  
+      if (!validatedQuery.success) {
+        return res.status(400).json({ message: "Invalid query parameters" });
+      }
+  
+      const { productName } = validatedQuery.data;
+  
+      const query = {};
+    //   if (productId) query._id = productId; 
+      if (productName) query.productName = { $regex: new RegExp(productName, 'i') }; // Case-insensitive search
+  
+      const products = await OfflineProduct.find(query);
+  
+      res.status(200).json(products);
+    } catch (error) {
+      console.error("Error during fetching products:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+  
+  
+
+  
+
+
+
+  
+  router.post("/add-to-cart-offline", authMiddleware, async (req, res) => {
     try {
       // Input validation check
       const userId = req.userId;
@@ -95,8 +109,7 @@ const productBody = zod.object({
         productQty:  req.body.productQty,
         productPrice:  req.body.productPrice,
         productName:  req.body.productName,
-        productDescription:  req.body.productDescription,
-        mode:req.body.mode
+        productDescription:  req.body.productDescription
       });
   
       
@@ -114,25 +127,44 @@ const productBody = zod.object({
   });
 
 
-  //put authMiddleware check here too
-
-  router.get("/getitems-from-onlinecart-for-billing", async (req, res) => {
+  router.get("/getitems-from-onlinecart-for-billing", authMiddleware, async (req, res) => {
     try {
-        const userId = req.query.id;
-
-        if (!userId) {
-            return res.status(400).json({ message: "User ID is required" });
-        }
-
-        const CartProducts = await OnlineCart.find({ userId });
-
-        res.status(200).json({ CartProducts });
+      // Input validation check
+      const userId = req.query.id;
+      
+      const CartProducts = await OnlineCart.find({ userId });
+  
+      // When both checks are successful, add user to the database
+      res.status(200).json({
+        CartProducts,
+      })
     } catch (error) {
-        console.error("Error during fetching products from cart:", error);
-        res.status(500).json({ message: "Internal server error" });
+      console.error("Error during fetching products from cart:", error);
+      res.status(500).json({
+        message: "Internal server error",
+      });
     }
-});
+  });
 
+  
+  router.get("/getitems-from-onlinecart", authMiddleware, async (req, res) => {
+    try {
+      // Input validation check
+      const userId = req.userId;
+      
+      const CartProducts = await OnlineCart.find({ userId });
+  
+      // When both checks are successful, add user to the database
+      res.status(200).json({
+        CartProducts,
+      })
+    } catch (error) {
+      console.error("Error during fetching products from cart:", error);
+      res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  });
 
 
 
