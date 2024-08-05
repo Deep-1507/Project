@@ -12,6 +12,7 @@ import {
   CardActions,
 } from "@mui/material";
 import { CustomButton } from "../components/CustomButton";
+import Footer from "../components/Footer";
 
 export const Cart = () => {
   const [products, setProducts] = useState([]);
@@ -85,8 +86,8 @@ export const Cart = () => {
   
 
   return (
-    <div className=" ">
-      <Navbar/>
+    <div className="flex flex-col min-h-screen ">
+      <Navbar  showCart={true} showWishlist={true} />
         <div className="m-4 font-semibold ">
   <span className="text-2xl text-gray-800">Cart : {products.length} item </span>
 </div>
@@ -120,6 +121,7 @@ export const Cart = () => {
         ))}
       </Grid>
       </div>
+      <Footer/>
       </div>
   );
 };

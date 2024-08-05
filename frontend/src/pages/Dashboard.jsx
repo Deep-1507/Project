@@ -5,6 +5,7 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom"; // Add this import
 import Navbar from "../components/Navbar";
 import "./Signin.css";
+import Footer from "../components/Footer";
 import {
   Card,
   CardContent,
@@ -63,9 +64,9 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="scrollbar">
+    <div className="scrollbar ">
       <div className="mb-3 ">
-      <Navbar/>
+      <Navbar  showCart={true} showWishlist={true} />
       </div>
       <div className="p-8">
       <Grid container spacing={4}>
@@ -97,6 +98,7 @@ export const Dashboard = () => {
         ))}
       </Grid>
       </div>
+      <Footer/>
     </div>
   );
 };

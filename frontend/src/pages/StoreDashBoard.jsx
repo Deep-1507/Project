@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import ConditionalNavbar from "../components/ConditionalNavbar";
+import Footer from "../components/Footer";
 import { Inputbox } from "../components/Inputbox";
 import { CustomButton } from "../components/CustomButton";
+import { Search } from "../components/Search";
 
 export const StoreDashBoard = () => {
   const [users, setUsers] = useState([]);
@@ -37,26 +39,29 @@ export const StoreDashBoard = () => {
   }, [filter, token, enqueueSnackbar]);
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <div className="mb-3">
-        <Navbar />
+        <ConditionalNavbar />
       </div>
-      <div className="p-8">
-        <Inputbox
-          label={"Enter Customer's username"}
-          placeholder={"name@gmail.com"}
-          onChange={(e) => setFilter(e.target.value)}
-        />
+      <div className="p-8 flex-grow">
+        <div className="mb-4">
+          <Search
+            label={"Search Customer"}
+            placeholder={"Search Customer..."}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </div>
+        <div className="p-8">
+          {loading && <div>Loading...</div>}
+          {error && <div>Error: {error}</div>}
+          {users.length > 0 ? (
+            users.map((user) => <User key={user._id} user={user} />)
+          ) : (
+            !loading && <div>No users found</div>
+          )}
+        </div>
       </div>
-      <div className=" p-8">
-        {loading && <div>Loading...</div>}
-        {error && <div>Error: {error}</div>}
-        {users.length > 0 ? (
-          users.map((user) => <User key={user._id} user={user} />)
-        ) : (
-          !loading && <div>No users found</div>
-        )}
-      </div>
+      <Footer />
     </div>
   );
 };
@@ -66,32 +71,29 @@ const User = ({ user }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-between border-4 p-4 hover:border-customGreen">
+    <div className="flex justify-between border-4 p-4 m-4 hover:bg-yellow-50 rounded-lg transition ease-in-out duration-300 transform hover:scale-105 hover:opacity-75">
       <div className="flex">
         <div className="flex items-center">
           <div className="w-12 h-12 rounded-full bg-walmartYellow flex items-center justify-center">
             {user.firstName[0]}
           </div>
         </div>
-
         <div className="ps-8">
           <div>Id: {user._id}</div>
           <div>
             Name: {user.firstName} {user.lastName}
           </div>
           {/* Assuming 'position' and 'positionseniorityindex' are available on user */}
-          
         </div>
       </div>
       <div className="flex items-center">
-      <CustomButton
-  label={"Start Session"}
-  onClick={() => {
-    const name = encodeURIComponent(user.firstName + " " + user.lastName);
-    navigate(`/store-billing-page?id=${user._id}&name=${name}&username=${user.username}`);
-  }}
-/>
-
+        <CustomButton
+          label={"Start Session"}
+          onClick={() => {
+            const name = encodeURIComponent(user.firstName + " " + user.lastName);
+            navigate(`/store-billing-page?id=${user._id}&name=${name}&username=${user.username}`);
+          }}
+        />
       </div>
     </div>
   );

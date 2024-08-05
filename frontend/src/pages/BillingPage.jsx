@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import Navbar from "../components/Navbar";
+import ConditionalNavbar from "../components/ConditionalNavbar";
 import {
   Card,
   CardContent,
@@ -12,6 +12,7 @@ import {
   CardActions,
 } from "@mui/material";
 import { CustomButton } from "../components/CustomButton";
+import Footer from "../components/Footer";
 
 export const BillingPage = () => {
   const [userData, setUserData] = useState(null);
@@ -108,9 +109,11 @@ export const BillingPage = () => {
   }, [enqueueSnackbar, token]);
 
   return (
-    <div>
-      <Navbar />
-
+    <div className="flex flex-col min-h-screen">
+      <div>
+      <ConditionalNavbar />
+      </div>
+ 
       <div className="p-8">
         <div className="text-3xl text-center font-semibold underline decoration-walmartYellow">
           Billing Page
@@ -201,6 +204,7 @@ export const BillingPage = () => {
 </div>
 
       </div>
+      <Footer/>
     </div>
   );
 };
