@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
-const Navbar = ({ showCart ,showWishlist}) => {
+const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showStoreDashboard}) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -38,7 +38,26 @@ const Navbar = ({ showCart ,showWishlist}) => {
         {/* Right section with icons and logout button */}
         <div className="flex items-center space-x-6">
 
-           {showWishlist && (
+           {showDashboard && (
+            <div className="flex items-center space-x-1 cursor-pointer"
+            onClick={() => navigate("/dashboard")}
+            >
+            <Icon icon="ri:dashboard-horizontal-fill" width="24" color="white" />
+            <span className="text-white">Dashboard</span>
+          </div>
+           )}
+
+         {showStoreDashboard && (
+            <div className="flex items-center space-x-1 cursor-pointer"
+            onClick={() => navigate("/store-dashboard")}
+            >
+            <Icon icon="ri:dashboard-horizontal-fill" width="24" color="white" />
+            <span className="text-white">Dashboard</span>
+          </div>
+           )}
+
+
+          {showWishlist && (
             <div className="flex items-center space-x-1 cursor-pointer">
             <Icon icon="mdi:heart" width="24" color="white" />
             <span className="text-white">Wishlist</span>
@@ -55,13 +74,15 @@ const Navbar = ({ showCart ,showWishlist}) => {
               <span className="text-white">My Cart</span>
             </div>
           )}
-          <div
-            className="flex items-center space-x-1 cursor-pointer"
+
+          {showAccount && ( 
+            <div className="flex items-center space-x-1 cursor-pointer"
             onClick={() => navigate("/account")}
           >
             <Icon icon="material-symbols:person" width="24" color="white" />
             <span className="text-white">My Account</span>
-          </div>
+          </div>)}
+          
           <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300">
             <button onClick={handleLogout}>
               Log out

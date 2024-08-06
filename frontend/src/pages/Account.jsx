@@ -57,7 +57,7 @@ export const Account = () => {
 
   return (
     <div>
-     <Navbar  showCart={true} showWishlist={true} />
+     <Navbar  showCart={true} showWishlist={true} showAccount={true}/>
 
       <div className="p-8">
         <div className="text-3xl text-center font-semibold underline decoration-walmartYellow">

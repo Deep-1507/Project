@@ -3,6 +3,7 @@ import { Inputbox } from "../components/Inputbox";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import Navbar from "../components/Navbar";
+import ProductCard from "../components/ProductCard";
 import {
   Card,
   CardContent,
@@ -87,12 +88,12 @@ export const Cart = () => {
 
   return (
     <div className="flex flex-col min-h-screen ">
-      <Navbar  showCart={true} showWishlist={true} />
+   <Navbar  showCart={true} showWishlist={true} showAccount={true} showDashboard={true} showStoreDashboard={false}/>
         <div className="m-4 font-semibold ">
-  <span className="text-2xl text-gray-800">Cart : {products.length} item </span>
+  <span className="text-2xl text-cyan-900">CART : {products.length} ITEM </span>
 </div>
 <div className="p-8">
-      <Grid container spacing={4} className="ml-5 mr-5">
+      {/* <Grid container spacing={4} className="ml-5 mr-5">
         {products.map((product) => (
           <Grid item key={product._id} xs={12} sm={6} md={4}>
             <Card className="m-3 p-3 ">
@@ -119,7 +120,18 @@ export const Cart = () => {
             </Card>
           </Grid>
         ))}
-      </Grid>
+      </Grid> */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product}>
+               <CustomButton
+                label="Remove from Cart"
+                onClick={() => handleDelete(product._id)}
+                className="ml-auto"
+              />
+              </ProductCard>
+          ))}
+        </div>
       </div>
       <Footer/>
       </div>

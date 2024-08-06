@@ -43,14 +43,21 @@ export const StoreDashBoard = () => {
       <div className="mb-3">
         <ConditionalNavbar />
       </div>
-      <div className="p-8 flex-grow">
-        <div className="mb-4">
-          <Search
+       <div className="flex justify-between items-center mt-5">
+  <div className=" text-left font-bold ml-12">
+    <div className="text-5xl text-neutral-600">Welcome!</div>
+    <div className="text-4xl">Simplified billing awaits.</div>
+  </div>
+  
+  <div className="p-8 flex-grow ">
+  <Search
             label={"Search Customer"}
             placeholder={"Search Customer..."}
             onChange={(e) => setFilter(e.target.value)}
           />
-        </div>
+  </div>
+</div>
+       
         <div className="p-8">
           {loading && <div>Loading...</div>}
           {error && <div>Error: {error}</div>}
@@ -60,7 +67,7 @@ export const StoreDashBoard = () => {
             !loading && <div>No users found</div>
           )}
         </div>
-      </div>
+      
       <Footer />
     </div>
   );
@@ -71,7 +78,7 @@ const User = ({ user }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-between  p-8 m-4 shadow-lg hover:bg-yellow-50 rounded-lg transition ease-in-out duration-300 transform hover:scale-105 hover:opacity-75">
+    <div className="flex justify-between  p-8 m-4 shadow-lg hover:bg-yellow-50 rounded-lg transition ease-in-out duration-300 transform hover:scale-105 ">
       <div className="flex">
         <div className="flex items-center">
           <div className="w-12 h-12 rounded-full bg-walmartYellow flex items-center justify-center">

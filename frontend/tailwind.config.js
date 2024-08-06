@@ -6,6 +6,15 @@ export default {
   ],
   theme: {
     extend: {
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+      },
       fontFamily: {
         Anton: ["Anton SC", ,"sans-serif"],
         sans: ['Open Sans', 'Arial', 'sans-serif'], // Add your Google Font here
@@ -17,6 +26,7 @@ export default {
       height:{
         '192':'45rem',
       }
+      
     },
   },
   plugins: [],

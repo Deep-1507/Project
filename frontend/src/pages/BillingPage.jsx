@@ -5,6 +5,10 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import ConditionalNavbar from "../components/ConditionalNavbar";
 import { Inputbox } from "../components/Inputbox";
+import Navbar from "../components/Navbar";
+import "./Signin.css";
+import FullPagePopup from "../components/FullPagePopup";
+import DateAndTime from "../components/DateAndTime";
 import {
   Card,
   CardContent,
@@ -29,6 +33,8 @@ export const BillingPage = () => {
   const [success, setSuccess] = useState('');
   const [token] = localStorage.getItem("token");
   const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
 
   const location = useLocation();
   const { enqueueSnackbar } = useSnackbar(); // To display error messages
@@ -193,38 +199,54 @@ const handleSubmit = async () => {
               },
           }
       );
+  setSuccess('Session created successfully!');
+  setError('');
+  console.log(response.data); // Log the response data if needed
 
-      // Handle the successful response
-      setSuccess('Session created successfully!');
-      setError('');
-      console.log(response.data); // Log the response data if needed
-      enqueueSnackbar("Billing Done! Session Closed Successfully! Thank you for shopping with us 😊 ", { variant: "success" });
-      navigate('/store-dashboard');
-  } catch (err) {
-      // Handle errors
-      setError('Error creating session');
-      setSuccess('');
-      console.error(err);
-  }
+  // Set popup message and show popup
+  setPopupMessage('Billing Done! Session Closed Successfully! Thank you for shopping with us 😊');
+  setShowPopup(true);
+} catch (err) {
+  // Handle errors
+  setError('Error creating session');
+  setSuccess('');
+  console.error(err);
+}
+
 };
+
 
 
   return (
     <div className="flex flex-col min-h-screen">
+       
+      {/* Your component content */}
+      {/* <button onClick={handleSubmit}>Submit</button> */}
+      {showPopup && <FullPagePopup message={popupMessage} duration={2000} navigateTo="/store-dashboard" />}
+    
       <div>
-        <ConditionalNavbar />
+        <ConditionalNavbar/>
       </div>
 
-      <div className="p-8 ">
-        <div className="text-3xl text-center   font-semibold underline decoration-walmartYellow">
-          Billing Page
-        </div>
+      <div className="p-10 ">
+      <div className="flex justify-between items-center">
+  <div className=" text-left font-bold">
+    <div className="text-5xl text-neutral-600">Welcome!</div>
+    <div className="text-4xl">Simplified billing awaits.</div>
+  </div>
+  
+  <div className="p-4">
+    <DateAndTime />
+  </div>
+</div>
 
-        <div className="p-4 flex justify-between">
+
+        <div className="p-4 flex justify-between rounded-2xl shadow-2xl bg-slate-50 ">
           <div className="mt-4">
-            <h2 className="text-2xl underline decoration-walmartBlue">
-              Store Data
-            </h2>
+          <div className="text-3xl p-3 flex items-baseline">
+              <div className="text-cyan-800 mr-1 font-bold"> STORE</div>
+              <div className="font-extralight">DATA</div>
+            </div>
             {loading && <div>Loading store data...</div>}
             {error && <div>Error: {error}</div>}
             {storeData ? (
@@ -242,9 +264,10 @@ const handleSubmit = async () => {
           </div>
 
           <div className="mt-4">
-            <h2 className="text-2xl  underline decoration-walmartBlue">
-              User Data
-            </h2>
+            <div className="text-3xl p-3 flex items-baseline">
+              <div className="text-cyan-800 mr-1 font-bold"> USER</div>
+              <div className="font-extralight">DATA</div>
+            </div>
             {loading && <div>Loading user data...</div>}
             {error && <div>Error: {error}</div>}
             {userData ? (
@@ -264,12 +287,14 @@ const handleSubmit = async () => {
 
         <hr />
 
-        <div className="flex mt-4">
-          <div className="w-2/3 pr-4">
-            <h2 className="text-2xl text-center font-bold underline decoration-walmartBlue">
+        <div className="flex mt-4 rounded-2xl shadow-2xl bg-slate-50">
+          <div className="w-1/3 ">
+            <h2 className="text-2xl text-center font-sans mt-5 mb-4">
               Products Section
             </h2>
-            <div>
+            <hr  class="border-t border-gray-300"></hr>
+           
+            <div className="w-full p-3">
               <Inputbox
                 label={"Search Products"}
                 placeholder={"Enter Product ID or Name"}
@@ -278,7 +303,9 @@ const handleSubmit = async () => {
             </div>
             {loading && <p>Loading...</p>}
             {error && <p>{error}</p>}
+            
             <div className="p-4">
+            <div className=" overflow-y-scroll h-192 scrollbar ">
               {productsOffline.length > 0 ? (
                 <ul>
                   {productsOffline.map((product) => (
@@ -302,14 +329,17 @@ const handleSubmit = async () => {
                 <p>No products found</p>
               )}
             </div>
+            </div>
           </div>
-          <div className="bg-walmartYellow w-1"></div>
+         
 
-          <div className="w-2/3">
-            <h2 className="text-2xl text-center font-bold underline decoration-walmartBlue">
+          <div className="w-1/3 bg-walmartBlue bg-opacity-5 rounded-2xl shadow-2xl  ">
+            <h2 className="text-2xl text-center font-sans mt-5 mb-4">
               Billing Section
             </h2>
-            <div className="p-4">
+            <hr  class="border-t border-gray-300"></hr>
+            <div className="p-4 ">
+            <div className="overflow-y-scroll h-192 scrollbar">
               {billingProducts.length > 0 ? (
                 <ul>
                   {billingProducts.map((product) => (
@@ -344,20 +374,24 @@ const handleSubmit = async () => {
               >
                 Start Billing and Close the Session
               </button>
+              </div>
             </div>
           </div>
 
-          <div className="bg-walmartYellow w-1"></div>
+          <div className=" "></div>
           <div className="w-1/3">
-            <h2 className="text-2xl font-bold text-center underline decoration-walmartBlue">
+            <h2 className="text-2xl text-center font-sans mt-5 mb-4">
               Users Online Cart
             </h2>
-            <div className="m-4 font-semibold text-center">
+            <hr  class="border-t border-gray-300"></hr>
+           
+            <div className="m-4 font-semibold text-center ">
               <span className="text-2xl text-gray-800">
                 Cart: {products.length} item{products.length !== 1 ? "s" : ""}
               </span>
             </div>
-            <div className="p-8">
+            <div className="p-3">
+            <div className="overflow-y-scroll h-192 scrollbar">
               <div className="p-4">
                 {products.length > 0 ? (
                   <ul>
@@ -389,6 +423,7 @@ const handleSubmit = async () => {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
       <Footer />

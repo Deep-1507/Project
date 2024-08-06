@@ -22,14 +22,14 @@
 }
 
 .scrollbar::-webkit-scrollbar {
-    width: 15px;
-    background: black;
+    width: 0px;
+    background: white;
 
 }
 
 
 .scrollbar::-webkit-scrollbar-thumb {
-    background:  #a19e9e; /* Default color of the thumb */
+    background: transparent;
     transition: background-color 0.3s ease; /* Smooth color transition on hover */
 }
 

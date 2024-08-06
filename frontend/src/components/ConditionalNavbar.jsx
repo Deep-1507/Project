@@ -5,9 +5,14 @@ const ConditionalNavbar = () => {
   const location = useLocation();
 
   const isStoreDashboard = location.pathname.includes('/store-dashboard');
+  const isStoreBillingPage = location.pathname.includes('/store-billing-page');
+  const hideCartAndWishlist = isStoreDashboard || isStoreBillingPage ;
 
   return (
-    <Navbar showCart={!isStoreDashboard} showWishlist={!isStoreDashboard} />
+    <div>
+      <Navbar showCart={!hideCartAndWishlist} showWishlist={!hideCartAndWishlist} showAccount={!hideCartAndWishlist} showStoreDashboard={hideCartAndWishlist} />
+    </div>
+    
   );
 };
 
