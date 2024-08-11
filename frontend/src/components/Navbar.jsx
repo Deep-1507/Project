@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
-const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showStoreDashboard}) => {
+const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showStoreDashboard, showLogin , showLogout , showStoreLogin}) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -13,7 +13,7 @@ const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showSto
     enqueueSnackbar("Logout successful", { variant: "success" });
 
     setTimeout(() => {
-      navigate("/signin");
+      navigate("/");
     }, 1000);
   };
 
@@ -83,11 +83,30 @@ const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showSto
             <span className="text-white">My Account</span>
           </div>)}
           
-          <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300">
+        {showLogout && (
+            <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300">
             <button onClick={handleLogout}>
               Log out
             </button>
           </div>
+        )}
+
+          {showLogin && (
+            <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300" >
+            <button onClick={() => navigate("/auth")} >
+             User Log in
+            </button>
+          </div>
+          )}
+
+{showStoreLogin && (
+            <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300" >
+            <button onClick={() => navigate("/store-auth")} >
+             Store Log in
+            </button>
+          </div>
+          )}
+
         </div>
       </div>
       <div className="bg-walmartBlue opacity-25 h-8"></div>

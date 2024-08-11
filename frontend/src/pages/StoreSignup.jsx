@@ -63,7 +63,7 @@ export const StoreSignup = () => {
         <div className="text-xl font-semibold text-center">
         <span className="text-red-600">Warning!</span> <br />
         <span className="text-red-600">This page should only to be accessed by Store Handler InCharge</span><br />
-          <p> Create a Store </p>
+          <p> </p>
 
          
         </div>

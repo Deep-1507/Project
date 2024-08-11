@@ -68,7 +68,7 @@ export const Dashboard = () => {
   return (
     <div className="scrollbar ">
       <div className="mb-3 ">
-      <Navbar  showCart={true} showWishlist={true} showAccount={true} showDashboard={true} showStoreDashboard={false} />
+      <Navbar showCart={true} showWishlist={true} showAccount={true} showDashboard={true} showStoreDashboard={false} showLogout={true} showLogin={false}/>
       </div>
       <div className="p-8">
        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
