@@ -40,12 +40,15 @@ const DateAndTime = () => {
   };
 
   const formatDayOfWeek = (date) => date.toLocaleDateString(undefined, { weekday: 'long' }).toUpperCase();
-
+ 
   return (
     <div className="relative flex flex-row w-full items-center  rounded-br-xl shadow-xl">
-      <div className="flex flex-col bg-sky-900 text-white space-y-1 rounded-tl-xl mt-1 pr-7">
-        <div className="text-2xl font-bold m-6 mb-0">{formatDayAndMonth(currentTime)}</div>
+      <div className="flex flex-col bg-sky-900 text-white space-y-1 rounded-tl-xl mt-1 pr-7 ">
+        <div className='mt-5'>
+        <div className="text-2xl font-bold m-6 mb-0 ">{formatDayAndMonth(currentTime)}</div>
         <div className="font-extralight text-4xl m-6 mt-0">{formatYear(currentTime)}</div>
+        </div>
+       
       </div>
       <div className="flex flex-col space-y-1 pl-8 pb-2">
         <div className="text-xl font-semibold m-6 mb-0">{formatTime(currentTime)}</div>

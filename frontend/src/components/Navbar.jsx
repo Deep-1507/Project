@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
-const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showStoreDashboard, showLogin , showLogout , showStoreLogin}) => {
+const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showStoreDashboard, showLogin , showLogout , showStoreLogin , showPdt}) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -82,6 +82,14 @@ const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showSto
             <Icon icon="material-symbols:person" width="24" color="white" />
             <span className="text-white">My Account</span>
           </div>)}
+
+          {showPdt && (
+            <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300">
+            <button onClick={() => navigate("/add-product-in-store")}>
+              Add your Product
+            </button>
+          </div>
+        )}
           
         {showLogout && (
             <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300">

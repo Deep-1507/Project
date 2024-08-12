@@ -14,6 +14,7 @@ import { SnackbarProvider } from 'notistack';
 import AuthContainer from './pages/AuthContainer';
 import StoreAuth from './pages/StoreAuth';
 import HomePage from './pages/Homepage';
+import {AddProductoffline} from './pages/AddProduct-offline';
 // import { Products } from "./pages/Products";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Routes>
         <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthContainer />} />
+          <Route path="/add-product-in-store" element={<AddProductoffline />} />
           <Route path="/store-auth" element={<StoreAuth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/online-cart" element={<Cart />} />

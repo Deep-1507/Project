@@ -17,21 +17,19 @@ const categories = [
   { name: 'Officewear', imgSrc: accessoriesImg, link: '/dashboard' },
   { name: 'Topwear', imgSrc: topwearImg, link: '/dashboard' },
   { name: 'Accessories', imgSrc: jewelleriesImg, link: '/dashboard' },
-  { name: 'Footwear', imgSrc: FootwearImg, link: '/grocery' },
+  { name: 'Footwear', imgSrc: FootwearImg, link: '/dashboard' },
 ];
 
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar showLogin={true} showStoreLogin={true} />
-
-      {/* Hero Section with Carousel */}
-      <section className="relative h-[500px]"> {/* Increased height */}
+      <section className="relative h-[500px]"> 
         <Swiper
           spaceBetween={30}
           centeredSlides={true}
           autoplay={{
-            delay: 2.5, // Slide every 2.5 seconds
+            delay: 2.5,
             disableOnInteraction: false,
           }}
           pagination={{
@@ -70,8 +68,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
-      {/* Categories Section */}
       <section className="container mx-auto px-4 py-8 overflow-hidden">
         <h3 className="text-3xl font-semibold mb-10">Shop by Category</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">

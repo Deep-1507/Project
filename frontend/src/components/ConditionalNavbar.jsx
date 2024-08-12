@@ -10,7 +10,7 @@ const ConditionalNavbar = () => {
 
   return (
     <div>
-      <Navbar showCart={!hideCartAndWishlist} showWishlist={!hideCartAndWishlist} showAccount={!hideCartAndWishlist} showStoreDashboard={hideCartAndWishlist} showLogin={!hideCartAndWishlist} showLogout={hideCartAndWishlist} />
+      <Navbar showCart={!hideCartAndWishlist} showWishlist={!hideCartAndWishlist} showAccount={!hideCartAndWishlist} showStoreDashboard={hideCartAndWishlist} showPdt={hideCartAndWishlist} showLogin={!hideCartAndWishlist} showLogout={hideCartAndWishlist} />
     </div>
     
   );
