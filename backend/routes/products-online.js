@@ -134,6 +134,22 @@ const productBody = zod.object({
 });
 
 
+router.get("/getitems-from-onlinecart",authMiddleware, async (req, res) => {
+  try {
+      const userId = req.userId;
+
+      if (!userId) {
+          return res.status(400).json({ message: "User ID is required" });
+      }
+
+      const CartProducts = await OnlineCart.find({ userId });
+
+      res.status(200).json({ CartProducts });
+  } catch (error) {
+      console.error("Error during fetching products from cart:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
   router.delete('/delete-item/:id',authMiddleware, async (req, res) => {

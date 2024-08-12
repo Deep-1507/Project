@@ -16,7 +16,6 @@ const productBody = zod.object({
     productDescription: zod.string().min(1)
   });
 
-  //Use Authmiddleware
   router.post("/create-product",authMiddleware, async (req, res) => {
     try {
       // Input validation check
