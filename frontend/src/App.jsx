@@ -15,6 +15,7 @@ import AuthContainer from './pages/AuthContainer';
 import StoreAuth from './pages/StoreAuth';
 import HomePage from './pages/Homepage';
 import {AddProductoffline} from './pages/AddProduct-offline';
+import {AddProductonline} from './pages/AddProduct-online';
 // import { Products } from "./pages/Products";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthContainer />} />
           <Route path="/add-product-in-store" element={<AddProductoffline />} />
+          <Route path="/add-product-in-onlinestore" element={<AddProductonline />} />
           <Route path="/store-auth" element={<StoreAuth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/online-cart" element={<Cart />} />

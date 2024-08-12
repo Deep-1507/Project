@@ -1,70 +1,106 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require('mongoose');
-const zod = require("zod");
-const { User, OnlineProduct,OnlineCart,OfflineProduct } = require("../db");
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config");
-const bcrypt = require("bcrypt");
+const { OnlineProduct } = require("../db");
 const { authMiddleware } = require("../middleware");
+const multer = require("multer");
+const { GridFSBucket } = require('mongodb');
+const mongooseConnection = mongoose.connection;
+const zod = require("zod");
+const { readFileSync } = require("fs");
+const path = require("path");
+const storage = multer.memoryStorage(); // Store file in memory
+const upload = multer({ storage: storage });
 
-const productBody = zod.object({
-    productId: zod.string(),
-    productQty: zod.number(),
-    productPrice: zod.string(),
-    productName: zod.string().min(1),
-    productDescription: zod.string().min(1)
-  });
+router.post(
+  "/create-product",
+  upload.array("productImages"),
+  async (req, res) => {
+    const productSchema = zod.object({
+      productId: zod.string().nonempty(),
+      productName: zod.string().nonempty(),
+      productQty: zod.number().positive(),
+      productPrice: zod.string().nonempty(), // Adjust if needed
+      productDescription: zod.string().nonempty(),
+      category: zod.string().nonempty(),
+      brand: zod.string().nonempty(),
+      sku: zod.string().nonempty(),
+      weight: zod.string().nonempty(),
+      dimensions: zod.string().nonempty(),
+      inStock: zod.boolean(),
+      tags: zod.array(zod.string()),
+      warranty: zod.string().nonempty(),
+      color: zod.string().nonempty(),
+      size: zod.string().nonempty(),
+      material: zod.string().nonempty(),
+      rating: zod.number().optional()
+    });
 
-  //Use Authmiddleware
-  router.post("/create-product", async (req, res) => {
     try {
-      // Input validation check
-      const result = productBody.safeParse(req.body);
-      if (!result.success) {
-        return res.status(400).json({
-          message: "Input specified in incorrect format",
-        });
-      }
+      // Convert types and process images
+      const parsedBody = {
+        ...req.body,
+        productQty: Number(req.body.productQty),
+        inStock: req.body.inStock === 'true', // Convert string to boolean
+        tags: req.body.tags.split(','), // Convert string to array
+        rating: req.body.rating ? Number(req.body.rating) : undefined, // Convert string to number
+        productImages: req.files.map((file) => {
+          // Convert image file buffer to base64 string
+          return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+        })
+      };
 
-  
-      
-  
-      // When both checks are successful, add user to the database
-      const Product = await OnlineProduct.create({
-        mode:"online",
-        productId: req.body.productId,
-        productQty:  req.body.productQty,
-        productPrice:  req.body.productPrice,
-        productName:  req.body.productName,
-        productDescription:  req.body.productDescription
+      // Validate with Zod
+      productSchema.parse(parsedBody);
+
+      // Create a new product document
+      const newProduct = new OnlineProduct({
+        ...parsedBody,
       });
-  
-      
-     
-  
-      res.status(201).json({
-        message: "Product created successfully",
-      });
+
+      await newProduct.save();
+      res.status(201).json({ message: "Product created successfully", newProduct });
     } catch (error) {
-      console.error("Error during creating product:", error);
-      res.status(500).json({
-        message: "Internal server error",
-      });
+      console.error(error);
+      res.status(400).json({ message: "Error creating product", error: error.message });
     }
-  });
+  }
+);
 
-  router.get("/get-online-products", async (req, res) => {
-    try {
-        const Products = await OnlineProduct.find();
-        res.status(200).json(Products);
-      } catch (error) {
-        console.error("Error during fetching products:", error);
-        res.status(500).json({
-          message: "Internal server error",
-        });
-      }
-  });
+module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get("/get-online-products", async (req, res) => {
+  try {
+    const products = await OnlineProduct.find();
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error during fetching products:", error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
+
 
 
   const CartBody = zod.object({

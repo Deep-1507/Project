@@ -15,7 +15,7 @@ export const AddProductoffline = () => {
   const [error, setError] = useState(null);
   const [ productId, setProductId] = useState("");
   const [ productName, setProductName] = useState("");
-  const [ productQty, setProductQty] = useState(0);
+  const [ productQty, setProductQty] = useState();
   const [ productPrice, setProductPrice] = useState("");
   const [ productDescription , setProductDes] = useState("");
   const token = localStorage.getItem("token");
@@ -65,7 +65,14 @@ export const AddProductoffline = () => {
     </div>
     <form className="flex flex-col justify-center">
       <Inputbox label="Enter Product Id" type="text" name="productId" placeholder="Enter Product Id" onChange={(e) => setProductId(e.target.value)} />
-      <Inputbox label="Enter Product Quantity" type="text" name="productQty" placeholder="Enter Product Quantity" onChange={(e) => setProductQty(e.target.value)} />
+      <Inputbox
+  label="Enter Product Quantity"
+  type="number"
+  name="productQty"
+  placeholder="Enter Product Quantity"
+  onChange={(e) => setProductQty(Number(e.target.value))}
+/>
+
       <Inputbox label="Enter Product Price" type="text" name="productPrice" placeholder="Enter Product Price" onChange={(e) => setProductPrice(e.target.value)} />
       <Inputbox label="Enter Product Name" type="text" name="productName" placeholder="Enter Product Name" onChange={(e) => setProductName(e.target.value)} />
       <Inputbox label="Enter Product Description" type="text" name="productDes" placeholder="Enter Product Description" onChange={(e) => setProductDes(e.target.value)} />

@@ -68,12 +68,31 @@ const productSchemaOnline = new mongoose.Schema({
          trim:true,
          minLength: 1
      },
-     mode:{
-        type:String,
-        required:true,
-         trim:true,
-         minLength: 1
-     }
+     mode: {
+        type: String,
+        required: true, // Ensure this field is required if necessary
+        default: 'online', // Or set a default value
+      }, 
+     productImages: {
+        type: [String], // Array of image paths
+        required: true,
+      },
+      category: { type: String },
+  brand: { type: String },
+  sku: { type: String },
+  weight: { type: Number },
+  dimensions: {
+    length: { type: Number },
+    width: { type: Number },
+    height: { type: Number },
+  },
+  inStock: { type: Boolean, default: true },
+  tags: [{ type: String }],
+  warranty: { type: String },
+  color: { type: String },
+  size: { type: String },
+  material: { type: String },
+  rating: { type: Number, min: 0, max: 5 },
 },{
     collection:'Products-online' // Specify the collection name here
 });
