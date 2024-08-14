@@ -39,7 +39,7 @@ def page_not_found(e):
 def upload_profile_image():
 
     if session_alive(PROFILE_DIR) and len(request.args.getlist('updateprofile')) != True:
-        return redirect(url_for('upload_source_image'))
+        return redirect(url_for('tryon'))
 
     profile_form = ProfileImageUploadForm()
     if request.method == "POST":
@@ -54,7 +54,7 @@ def upload_profile_image():
             if len(request.args.getlist('nextpage')) > 0:
                 return redirect(url_for(request.args.get('nextpage')))
 
-            return redirect(url_for('upload_source_image'))
+            return redirect(url_for('tryon'))
 
     profile_image = None
     if session_alive(PROFILE_DIR):
@@ -67,18 +67,14 @@ def upload_profile_image():
 def upload_source_image():
     source_form = SourceImageUploadForm()
     if request.method == "POST":
+        print("Form Submitted")  # Debugging line
         if source_form.validate_on_submit():
-            image_url = source_form.source_image_url.data
-            # download image
-            app.logger.info("Downloading image: "+image_url)
-            source_image = download_image(image_url, dest_folder=SOURCE_DIR)
-            if "404" in source_image:
-                flash(source_image, 'danger')
-                return redirect(url_for('upload_source_image'))
-
-            session['source_image'] = source_image
-            # flash("Success:"+image_url, 'success')
-            return redirect(url_for('tryon'))
+            image = source_form.source_image.data
+            filename = secure_filename(image.filename)
+            print(f"Uploading image: {filename}")  # Debugging line
+            image.save(str(Path(SOURCE_DIR)/filename))
+            session['source_image'] = filename
+            return redirect(url_for('upload_profile_image'))
 
     source_image = None
     if 'source_image' in session.keys():

@@ -1,10 +1,14 @@
 import React from 'react';
+import axios from 'axios'; // Add this import statement
 import { Card, CardContent, Typography, CardMedia, Button } from '@mui/material';
 
 const ProductCard = ({ product, onAddToCart }) => {
+
+
+
   const imageUrl = product.productImages && product.productImages.length > 0
     ? product.productImages[0]
-    : '/path/to/placeholder/image.jpg'; // Placeholder image if no image data
+    : '/'; // Placeholder image if no image data
 
   return (
     <Card>
@@ -28,6 +32,14 @@ const ProductCard = ({ product, onAddToCart }) => {
       <Button size="small" color="primary" onClick={() => onAddToCart(product)}>
         Add to Cart
       </Button>
+      <Button size="small" color="primary" onClick={() => { 
+    const newWindow = window.open('http://localhost:8080/upload_source_image/', '_blank');
+    if (newWindow) {
+      newWindow.focus(); // Ensures the new tab is focused
+    }
+    }}>
+    Try On
+    </Button>
     </Card>
   );
 };

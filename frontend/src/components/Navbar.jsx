@@ -37,7 +37,7 @@ const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showSto
         </div>
         <div>
         <CustomButton label="Try On"  onClick={() => { 
-    const newWindow = window.open('http://localhost:8080/upload_profile_image/', '_blank');
+    const newWindow = window.open('http://localhost:8080/upload_source_image/', '_blank');
     if (newWindow) {
         newWindow.focus(); // Ensures the new tab is focused
     }

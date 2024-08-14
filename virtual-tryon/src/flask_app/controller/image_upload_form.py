@@ -11,6 +11,8 @@ class ProfileImageUploadForm(FlaskForm):
 
 
 class SourceImageUploadForm(FlaskForm):
-    source_image_url = StringField('source_image_url', id="source_image_url", validators=[URL()])
+    source_image = FileField('source_image',id="source_image",
+                              validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'Images only!')])
     submit = SubmitField('Submit', id="submit")
+
 
