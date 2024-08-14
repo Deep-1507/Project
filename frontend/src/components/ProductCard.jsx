@@ -10,6 +10,31 @@ const ProductCard = ({ product, onAddToCart }) => {
     ? product.productImages[0]
     : '/'; // Placeholder image if no image data
 
+
+
+    const handleTryOn = async () => {
+      try {
+        const response = await axios.post('http://localhost:8080/upload_product_image/', {
+          imageUrl: imageUrl,
+        },
+      {
+      withCredentials: true // This ensures cookies are sent with the request
+    });
+    
+        console.log('Image uploaded successfully:', response.data);
+        localStorage.setItem('source_image', response.data);
+        // Redirect to the upload_source_image page in a new window
+        const newWindow = window.open('http://localhost:8080/upload_profile_image/', '_blank');
+        if (newWindow) {
+          newWindow.focus(); 
+        }
+      } 
+      catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    };
+
+
   return (
     <Card>
       <CardMedia
@@ -32,12 +57,7 @@ const ProductCard = ({ product, onAddToCart }) => {
       <Button size="small" color="primary" onClick={() => onAddToCart(product)}>
         Add to Cart
       </Button>
-      <Button size="small" color="primary" onClick={() => { 
-    const newWindow = window.open('http://localhost:8080/upload_source_image/', '_blank');
-    if (newWindow) {
-      newWindow.focus(); // Ensures the new tab is focused
-    }
-    }}>
+      <Button size="small" color="primary" onClick={handleTryOn}>
     Try On
     </Button>
     </Card>

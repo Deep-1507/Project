@@ -92,25 +92,25 @@
     });
     });
 
-    $('document').ready(function(){
-        sample_image_section = $('section.js-sample-images')
-        // api call for sample source images
-        $.ajax({
-                    type: "GET",
-                    url: "/sample_source_images/",
-                    data: {},
-                    dataType: "json",
-                    success: function(data){
-                        sample_image_section.append("<label style='display:block;'>Sample Images (Pick One):</label>")
-                        const images_list = data["sample_source_images"]
-                        for (var i=0; i<images_list.length; i++){
-                            var $img =  $("<img>", {"class": "recent-images--hover my-2 mx-1 rounded img-fluid", "style": "height:50px;"});
-                            $img.attr('src', '/source_images/'+images_list[i])
-                            var $a_tag = $("<a>", {"href":"/pick_source_image/"+images_list[i] })
-                            sample_image_section.append($a_tag.append($img))
-                        }
-                    }
-                });
-    })
+    // // $('document').ready(function(){
+    // //     sample_image_section = $('section.js-sample-images')
+    // //     // api call for sample source images
+    // //     $.ajax({
+    // //                 type: "GET",
+    // //                 url: "/sample_source_images/",
+    // //                 data: {},
+    // //                 dataType: "json",
+    // //                 success: function(data){
+    // //                     sample_image_section.append("<label style='display:block;'>Sample Images (Pick One):</label>")
+    // //                     const images_list = data["sample_source_images"]
+    // //                     // for (var i=0; i<images_list.length; i++){
+    // //                     //     var $img =  $("<img>", {"class": "recent-images--hover my-2 mx-1 rounded img-fluid", "style": "height:50px;"});
+    // //                     //     $img.attr('src', '/source_images/'+images_list[i])
+    // //                     //     var $a_tag = $("<a>", {"href":"/pick_source_image/"+images_list[i] })
+    // //                     //     sample_image_section.append($a_tag.append($img))
+    // //                     // }
+    // //                 }
+    // //             });
+    // })
 </script>
 {% endblock %}

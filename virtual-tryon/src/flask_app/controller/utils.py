@@ -36,6 +36,7 @@ def create_dirs(dirs):
         os.makedirs(dir, exist_ok=True)
 
 def prepare_sample_images():
+    
     # copy sample images to files dir
     files_dir = os.path.join(app_config["FILES_DIR"], app_config['UPLOAD_FOLDER'])
 
@@ -48,3 +49,4 @@ def prepare_sample_images():
     # copy source images
     for img in os.listdir(source_dir):
         shutil.copyfile(os.path.join(source_dir, img), os.path.join(files_dir, "source_images", img))
+

@@ -32,7 +32,7 @@
             </p>
             
             <div class="form-group">
-                <a class="btn btn-outline-info" href="{{ url_for('home')}}">Back</a>
+                
                 {{ form.submit(class="btn btn-outline-info", disabled="True") }}
             </div>    
         </form>
@@ -50,6 +50,20 @@
 
 {% block script %}
 <script>
+
+    window.onload = () => {
+            const sourceImage = localStorage.getItem('source_image');
+            if (sourceImage) {
+                axios.post('http://localhost:8080/set_source_image/', { filename: sourceImage })
+                    .then(response => {
+                        console.log('Image sent successfully:', response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error sending image:', error);
+                    });
+            }
+        };
+
     $('document').ready(function(){
         $('#profile_image').change(function(){
         var profile_image = $('#profile_image').val();
@@ -60,26 +74,29 @@
         }
         })
     });
-    $('document').ready(function(){
-        sample_image_section = $('section.js-sample-images')
-        // api call for sample profile images
-        $.ajax({
-                    type: "GET",
-                    url: "/sample_profile_images/",
-                    data: {},
-                    dataType: "json",
-                    success: function(data){
-                        sample_image_section.append("<label style='display:block;'>Sample Profile Images (Pick One):</label>")
-                        const images_list = data["sample_profile_images"]
-                        for (var i=0; i<images_list.length; i++){
-                            var $img =  $("<img>", {"class": "recent-images--hover my-2 mx-1 rounded img-fluid", "style": "height:50px;"});
-                            $img.attr('src', '/profile_images/'+images_list[i])
-                            var $a_tag = $("<a>", {"href":"/pick_profile_image/"+images_list[i] })
-                            sample_image_section.append($a_tag.append($img))
-                        }
-                    }
-                });
-    })
+
+    
+
+    // $('document').ready(function(){
+    //     sample_image_section = $('section.js-sample-images')
+    //     // api call for sample profile images
+    //     $.ajax({
+    //                 type: "GET",
+    //                 url: "/sample_profile_images/",
+    //                 data: {},
+    //                 dataType: "json",
+    //                 success: function(data){
+    //                     sample_image_section.append("<label style='display:block;'>Sample Profile Images (Pick One):</label>")
+    //                     const images_list = data["sample_profile_images"]
+    //                     for (var i=0; i<images_list.length; i++){
+    //                         var $img =  $("<img>", {"class": "recent-images--hover my-2 mx-1 rounded img-fluid", "style": "height:50px;"});
+    //                         $img.attr('src', '/profile_images/'+images_list[i])
+    //                         var $a_tag = $("<a>", {"href":"/pick_profile_image/"+images_list[i] })
+    //                         sample_image_section.append($a_tag.append($img))
+    //                     }
+    //                 }
+    //             });
+    // })
     
 </script>
 {% endblock %}

@@ -1,3 +1,4 @@
+import base64
 from flask import (flash, render_template, request, redirect,
                    session, url_for, send_from_directory, jsonify)
 from pathlib import Path
@@ -6,11 +7,15 @@ from werkzeug.utils import secure_filename
 from controller.image_upload_form import ProfileImageUploadForm, SourceImageUploadForm
 from controller.utils import (session_alive, download_image)
 from controller.cmate import blend_images
-from controller.local_cache import cache, set_cache, clear_cache
-
+from flask_cors import CORS
 from flask_app import create_app
+import requests
+import uuid
 
 app = create_app()
+
+CORS(app, resources={r"/*": {"origins": "*"}},supports_credentials=True)
+
 
 PROFILE_DIR = app.config["PROFILE_DIR"]
 SOURCE_DIR = app.config["SOURCE_DIR"]
@@ -38,10 +43,9 @@ def page_not_found(e):
 @app.route('/upload_profile_image/', methods=['GET', 'POST'])
 def upload_profile_image():
 
-    if session_alive(PROFILE_DIR) and len(request.args.getlist('updateprofile')) != True:
-        return redirect(url_for('tryon'))
-
     profile_form = ProfileImageUploadForm()
+    print(f"Session source_image retrieved: {session.get('source_image')}")
+    print(f"Session profile_image retrieved: {session.get('profile_image')}")
     if request.method == "POST":
         if profile_form.validate_on_submit():
             f = profile_form.profile_image.data
@@ -51,8 +55,6 @@ def upload_profile_image():
             session['profile_image'] = filename
             # flash("Success:"+filename, 'success')
             # redirect to desired endpoint
-            if len(request.args.getlist('nextpage')) > 0:
-                return redirect(url_for(request.args.get('nextpage')))
 
             return redirect(url_for('tryon'))
 
@@ -93,10 +95,7 @@ def tryon():
         profile_image = session['profile_image']
         source_image = session['source_image']
         issues = ""
-
-        # check cache
-        if profile_image+source_image in cache.keys():
-            result_image, issues = cache[profile_image+source_image].split('--')
+        print(f"Session source_image retrieved: {session.get('source_image')}")
 
         if len(issues) > 0:
             flash(issues, 'warning')
@@ -120,8 +119,8 @@ def tryon_result():
                                 profile_dir=PROFILE_DIR,
                                 source_dir=SOURCE_DIR,
                                 dest_dir=RESULT_DIR)
-        # set cache
-        set_cache(profile_image+source_image, result_image+'--'+'\n'.join(issues))
+        
+        
 
         if len(issues) > 0:
             flash('\n'.join(issues), 'warning')
@@ -159,10 +158,10 @@ def sample_profile_images():
     return jsonify(sample_profile_images=sample_profile_images[:5])
 
 
-@app.route('/sample_source_images/', methods=['GET', 'POST'])
-def sample_source_images():
-    sample_source_images = [str(path.name) for path in (Path(app.static_folder)/'images'/'samples'/'source_images').iterdir()]
-    return jsonify(sample_source_images=sample_source_images[:5])
+# @app.route('/sample_source_images/', methods=['GET', 'POST'])
+# def sample_source_images():
+#     sample_source_images = [str(path.name) for path in (Path(app.static_folder)/'images'/'samples'/'source_images').iterdir()]
+#     return jsonify(sample_source_images=sample_source_images[:5])
 
 
 @app.route('/pick_profile_image/<path:filename>', methods=['GET', 'POST'])
@@ -171,11 +170,58 @@ def pick_profile_image(filename):
     session['profile_image'] = filename
     return redirect(url_for('upload_source_image'))
 
-@app.route('/pick_source_image/<path:filename>', methods=['GET', 'POST'])
-def pick_source_image(filename):
-    filename = secure_filename(filename)
-    session['source_image'] = filename
-    return redirect(url_for('tryon'))
+
+
+# @app.route('/pick_source_image/<path:filename>', methods=['GET', 'POST'])
+# def pick_source_image(filename):
+#     filename = secure_filename(filename)
+#     session['source_image'] = filename
+#     return redirect(url_for('tryon'))
+
+
+
+
+@app.route('/upload_product_image/', methods=['POST'])
+def upload_product_image():
+    SOURCE_DIR = Path('./files/user_uploads/source_images/')
+    data = request.json
+    image_data = data.get('imageUrl')
+
+    if not image_data:
+        return jsonify({'error': 'No image provided'}), 400
+
+    try:
+        # Check if the image data is base64 encoded
+        if image_data.startswith('data:image/'):
+            # Find the file format (e.g., jpeg, png) and the actual base64 data
+            header, encoded = image_data.split(',', 1)
+            file_extension = header.split('/')[1].split(';')[0]  # Extract the image format (jpeg, png, etc.)
+
+            # Generate a unique filename using UUID
+            unique_filename = secure_filename(f"{uuid.uuid4()}.{file_extension}")
+
+            # Decode the base64 string
+            image_bytes = base64.b64decode(encoded)
+
+            # Save the decoded bytes to a file
+            image_path = SOURCE_DIR / unique_filename
+            with open(image_path, 'wb') as f:
+                f.write(image_bytes)
+            print('Image uploaded successfully',unique_filename)
+            # Store the filename in the session
+            session.clear()
+            session['source_image'] = unique_filename
+            print(f"Session source_image set to: {session['source_image']}")
+
+            return jsonify({'message': 'Image uploaded successfully', 'filename': unique_filename}), 200
+            
+        else:
+            print("Invalid image data")
+            return jsonify({'error': 'Invalid image data'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 
 
 # if __name__ == '__main__':
