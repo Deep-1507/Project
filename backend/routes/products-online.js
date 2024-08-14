@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require('mongoose');
 const { OnlineProduct } = require("../db");
+const{OnlineCart} = require("../db")
 const { authMiddleware } = require("../middleware");
 const multer = require("multer");
 const { GridFSBucket } = require('mongodb');
@@ -102,6 +103,26 @@ router.get("/get-online-products", async (req, res) => {
 });
 
 
+router.get('/get-online-product/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find the product by ID
+    const product = await OnlineProduct.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Send the product data as a response
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 
   const CartBody = zod.object({
     mode:zod.string(),
@@ -114,29 +135,25 @@ router.get("/get-online-products", async (req, res) => {
   
   router.post("/add-to-cart-online", authMiddleware, async (req, res) => {
     try {
-      // Input validation check
       const userId = req.userId;
       const result = CartBody.safeParse(req.body);
+  
       if (!result.success) {
         return res.status(400).json({
           message: "Input specified in incorrect format",
+          errors: result.error.format(), // Detailed validation errors
         });
       }
-
   
-      // When both checks are successful, add user to the database
-      const Product = await OnlineCart.create({
-        userId:userId,
+      await OnlineCart.create({
+        userId: userId,
         productId: req.body.productId,
-        productQty:  req.body.productQty,
-        productPrice:  req.body.productPrice,
-        productName:  req.body.productName,
-        productDescription:  req.body.productDescription,
-        mode:req.body.mode
+        productQty: req.body.productQty,
+        productPrice: req.body.productPrice,
+        productName: req.body.productName,
+        productDescription: req.body.productDescription,
+        mode: req.body.mode
       });
-  
-      
-     
   
       res.status(201).json({
         message: "Item added to cart successfully",
@@ -145,9 +162,11 @@ router.get("/get-online-products", async (req, res) => {
       console.error("Error during adding product to cart:", error);
       res.status(500).json({
         message: "Internal server error",
+        error: error.message, // Include error details
       });
     }
   });
+  
 
 
   //put authMiddleware check here too
