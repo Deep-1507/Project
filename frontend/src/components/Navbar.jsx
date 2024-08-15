@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import { CustomButton } from "../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
@@ -33,6 +34,14 @@ const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showSto
           <span className="absolute right-2.5 flex items-center justify-center w-8 h-8 bg-walmartBlue rounded-full">
             <Icon icon="ic:baseline-search" color="white"/>
           </span>
+        </div>
+        <div>
+        <CustomButton label="Try On"  onClick={() => { 
+    const newWindow = window.open('http://localhost:8080/upload_source_image/', '_blank');
+    if (newWindow) {
+        newWindow.focus(); // Ensures the new tab is focused
+    }
+}}/>
         </div>
 
         {/* Right section with icons and logout button */}
