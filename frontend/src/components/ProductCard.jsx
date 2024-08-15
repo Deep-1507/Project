@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Button } from '@mui/material';
+import { CustomButton } from './CustomButton';
 
 const ProductCard = ({ product, onAddToCart, showAddToCart, showTryOn, showBuyNow }) => {
   const imageUrl = product.productImages && product.productImages.length > 0
@@ -109,14 +110,18 @@ const ProductCard = ({ product, onAddToCart, showAddToCart, showTryOn, showBuyNo
             </Button>
           )}
           {showTryOn && (
-            <Button 
-              variant="outlined" 
-              color="secondary" 
-              onClick={handleTryOn} 
-              className="flex-1 transition-transform duration-300 hover:scale-105"
-            >
-              Try On
-            </Button>
+           <CustomButton 
+           label="Try On" 
+           className={`relative bg-gradient-to-r from-[#E5AF6F] to-[#D079CE] text-white py-3 px-6 rounded-lg text-lg 
+                       before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-30 
+                       hover:shadow-lg focus:outline-none`} 
+           onClick={() => { 
+             const newWindow = window.open('http://localhost:8080/upload_source_image/', '_blank');
+             if (newWindow) {
+                 newWindow.focus(); // Ensures the new tab is focused
+             }
+           }}
+         />
           )}
           
         </div>

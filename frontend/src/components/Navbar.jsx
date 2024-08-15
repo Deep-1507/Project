@@ -25,23 +25,33 @@ const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showSto
         <div className="flex items-center">
           <Icon icon="tabler:brand-walmart" width="50" color="#FFC120" />
         </div>
-        <div className="flex items-center w-1/2 relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full px-4 py-2 rounded-full bg-white text-[#0071CE] focus:outline-none"
-          />
-          <span className="absolute right-2.5 flex items-center justify-center w-8 h-8 bg-walmartBlue rounded-full">
-            <Icon icon="ic:baseline-search" color="white"/>
-          </span>
-        </div>
+        <div className="flex items-center w-1/3 relative">
+  <input
+    type="text"
+    placeholder="Search..."
+    className="w-full px-3 py-1.5 rounded-full bg-white text-[#0071CE] focus:outline-none"
+  />
+  <span className="absolute right-2 flex items-center justify-center w-7 h-7 bg-walmartBlue rounded-full">
+    <Icon icon="ic:baseline-search" color="white"/>
+  </span>
+</div>
+
         <div>
-        <CustomButton label="Try On"  onClick={() => { 
+        <CustomButton 
+  label="Try On" 
+  className={`relative bg-gradient-to-r from-[#E5AF6F] to-[#D079CE] text-white py-3 px-6 rounded-lg text-lg 
+              before:content-[''] before:absolute before:inset-0 before:bg-white before:opacity-10 before:rounded-lg 
+              before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-30 
+              hover:shadow-lg focus:outline-none`} 
+  onClick={() => { 
     const newWindow = window.open('http://localhost:8080/upload_source_image/', '_blank');
     if (newWindow) {
         newWindow.focus(); // Ensures the new tab is focused
     }
-}}/>
+  }}
+/>
+
+
         </div>
 
         {/* Right section with icons and logout button */}
