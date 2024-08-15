@@ -115,12 +115,7 @@ const ProductCard = ({ product, onAddToCart, showAddToCart, showTryOn, showBuyNo
            className={`relative bg-gradient-to-r from-[#E5AF6F] to-[#D079CE] text-white py-3 px-6 rounded-lg text-lg 
                        before:transition-opacity before:duration-300 before:ease-in-out hover:before:opacity-30 
                        hover:shadow-lg focus:outline-none`} 
-           onClick={() => { 
-             const newWindow = window.open('http://localhost:8080/upload_source_image/', '_blank');
-             if (newWindow) {
-                 newWindow.focus(); // Ensures the new tab is focused
-             }
-           }}
+           onClick={handleTryOn}
          />
           )}
           
