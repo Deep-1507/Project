@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import ConditionalNavbar from "../components/ConditionalNavbar";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Inputbox } from "../components/Inputbox";
 import { CustomButton } from "../components/CustomButton";
@@ -41,7 +41,7 @@ export const Getofflinestores = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="mb-3">
-        <ConditionalNavbar />
+      <Navbar showCart={true} showWishlist={true} showAccount={true} showDashboard={true} showStoreDashboard={false} showLogout={true} showLogin={false} />
       </div>
        <div className="flex justify-between items-center mt-5">
   <div className=" text-left font-bold ml-12">

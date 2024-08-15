@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useLocation } from 'react-router-dom';
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import ConditionalNavbar from "../components/ConditionalNavbar";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Inputbox } from "../components/Inputbox";
 import { CustomButton } from "../components/CustomButton";
@@ -71,7 +71,7 @@ export const OfflineStore = () => {
 
     return (
         <>
-        <ConditionalNavbar />
+         <Navbar showCart={true} showWishlist={true} showAccount={true} showDashboard={true} showStoreDashboard={false} showLogout={true} showLogin={false} />
         <div className="p-4">
             
 

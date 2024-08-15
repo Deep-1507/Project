@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 const { authMiddleware } = require("../middleware");
 const multer = require("multer");
 const { GridFSBucket } = require('mongodb');
-const mongooseConnection = mongoose.connection;
+const mongooseConnection = mongoose.connection; 
 const { readFileSync } = require("fs");
 const path = require("path");
 const storage = multer.memoryStorage(); // Store file in memory
@@ -83,33 +83,35 @@ module.exports = router;
 
 
 
-  const querySchema = zod.object({
-    // productId: zod.string().optional(),
-    productName: zod.string().optional()
-  });
-  
-  router.get("/get-offline-products",authMiddleware, async (req, res) => {
-    try {
-      const validatedQuery = querySchema.safeParse(req.query);
-  
-      if (!validatedQuery.success) {
-        return res.status(400).json({ message: "Invalid query parameters" });
-      }
-  
-      const { productName } = validatedQuery.data;
-  
-      const query = {};
-    //   if (productId) query._id = productId; 
-      if (productName) query.productName = { $regex: new RegExp(productName, 'i') }; // Case-insensitive search
-  
-      const products = await OfflineProduct.find(query);
-  
-      res.status(200).json(products);
-    } catch (error) {
-      console.error("Error during fetching products:", error);
-      res.status(500).json({ message: "Internal server error" });
+const querySchema = zod.object({
+  productName: zod.string().optional()
+});
+
+router.get("/get-offline-products", authMiddleware, async (req, res) => {
+  try {
+    const validatedQuery = querySchema.safeParse(req.query);
+
+    if (!validatedQuery.success) {
+      return res.status(400).json({ message: "Invalid query parameters" });
     }
-  });
+
+    const { productName } = validatedQuery.data;
+    const userId = req.userId; // Assuming `userId` is added to `req` by `authMiddleware`
+
+    // Build the query
+    const query = { storeId: userId }; // Match `storeId` with `userId`
+    if (productName) query.productName = { $regex: new RegExp(productName, 'i') }; // Case-insensitive search
+
+    const products = await OfflineProduct.find(query);
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error during fetching products:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
   
   router.get("/get-offline-products-for-users", async (req, res) => {
     try {

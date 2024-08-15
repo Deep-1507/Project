@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Button } from '@mui/material';
 import { CustomButton } from './CustomButton';
 
-const ProductCard = ({ product, onAddToCart, showAddToCart, showTryOn, showBuyNow }) => {
+const ProductCard = ({ product, showAddToCart, showTryOn, showBuyNow }) => {
   const imageUrl = product.productImages && product.productImages.length > 0
     ? product.productImages[0]
     : '/'; // Placeholder image if no image data
@@ -29,7 +29,9 @@ const ProductCard = ({ product, onAddToCart, showAddToCart, showTryOn, showBuyNo
   };
 
   const handleAddToCart = async () => {
+    event.preventDefault(); 
     try {
+
       const response = await axios.post(
         "http://localhost:3000/api/v1/online-products/add-to-cart-online",
         {
@@ -60,9 +62,7 @@ const ProductCard = ({ product, onAddToCart, showAddToCart, showTryOn, showBuyNo
       );
   
       console.log("Product added to cart successfully:", response.data);
-      if (onAddToCart) {
-        onAddToCart(product);
-      }
+      
     } catch (error) {
       console.error("Error adding product to cart:", error.response?.data || error.message);
     }
@@ -100,14 +100,7 @@ const ProductCard = ({ product, onAddToCart, showAddToCart, showTryOn, showBuyNo
           )}
           
           {showAddToCart && (
-            <Button 
-              variant="contained" 
-              color="primary" 
-              onClick={handleAddToCart} 
-              className="flex-1 transition-transform duration-300 hover:scale-105"
-            >
-              Add to Cart
-            </Button>
+            <CustomButton label={"Add to Cart"} onClick={handleAddToCart} className={"flex-1 transition-transform duration-300 hover:scale-105"}/>
           )}
           {showTryOn && (
            <CustomButton 

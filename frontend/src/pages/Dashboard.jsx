@@ -69,7 +69,6 @@ export const Dashboard = () => {
             <Link key={product._id} to={`/product/${product._id}`}>
               <ProductCard 
                 product={product} 
-                onAddToCart={() => handleAddToCart(product)} 
                 showAddToCart={true} 
                 showTryOn={true} 
               />

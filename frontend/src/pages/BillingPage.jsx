@@ -18,6 +18,7 @@ import {
   CardActions,
 } from "@mui/material";
 import { CustomButton } from "../components/CustomButton";
+import { ProductsCardNew } from "../components/ProductsCardNew";
 import Footer from "../components/Footer";
 
 export const BillingPage = () => {
@@ -31,7 +32,7 @@ export const BillingPage = () => {
   const [TotalBillvalue,setTotalBillValue] = useState(null);
   const [productsOffline, setProductsOffline] = useState([]);
   const [success, setSuccess] = useState('');
-  const [token] = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
@@ -81,6 +82,7 @@ export const BillingPage = () => {
     const fetchProductsOffline = async () => {
       setLoading(true);
       setError("");
+      console.log("Token used for request:", token); // Debugging line
       try {
         const response = await axios.get(
           "http://localhost:3000/api/v1/offline-products/get-offline-products",
@@ -92,12 +94,15 @@ export const BillingPage = () => {
         setProductsOffline(Array.isArray(response.data) ? response.data : []);
       } catch (err) {
         setError("Error fetching products");
+        console.error("Fetch error:", err); // Log the error for more details
       }
       setLoading(false);
     };
-
+  
     fetchProductsOffline();
-  }, [query, token]); // Dependency array with query and token
+  }, [query, token]);
+  
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -392,35 +397,22 @@ const handleSubmit = async () => {
             </div>
             <div className="p-3">
             <div className="overflow-y-scroll h-192 scrollbar">
-              <div className="p-4">
-                {products.length > 0 ? (
-                  <ul>
-                    {products.map((product) => (
-                      <li
-                        key={product._id}
-                        className="border shadow-xl p-4 my-4"
-                      >
-                        <p>{product._id}</p>
-                        <p>Mode:{product.mode}</p>
-                        <h3>{product.productName}</h3>
-                        <p>{product.productDescription}</p>
-                        <p>Price: {product.productPrice}</p>
-                        <p>Quantity: {product.productQty}</p>
-                        <span className="">
-                          <CustomButton
-                            label={"Add to Billing"}
-                            onClick={() => {
-                              addToBilling(product);
-                            }}
-                          />
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No products found</p>
-                )}
-              </div>
+           
+          
+  {products.length > 0 ? (
+    <ul>
+      {products.map((product) => (
+        <ProductsCardNew
+          key={product._id}
+          product={product}
+          onAddToBilling={addToBilling}
+        />
+      ))}
+    </ul>
+  ) : (
+    <p>No products found</p>
+  )}
+
             </div>
           </div>
         </div>
