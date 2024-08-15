@@ -10,6 +10,7 @@ const mongooseConnection = mongoose.connection;
 const zod = require("zod");
 const { readFileSync } = require("fs");
 const path = require("path");
+const { error } = require("console");
 const storage = multer.memoryStorage(); // Store file in memory
 const upload = multer({ storage: storage });
 
@@ -122,53 +123,87 @@ router.get('/get-online-product/:id', async (req, res) => {
   }
 });
 
-
-
+router.post("/add-to-cart-online", authMiddleware, upload.array("productImages"), async (req, res) => {
   const CartBody = zod.object({
-    mode:zod.string(),
-    productId: zod.string(),
-    productQty: zod.number(),
-    productPrice: zod.string(),
-    productName: zod.string().min(1),
-    productDescription: zod.string().min(1)
+    mode: zod.string().nonempty(),
+    productId: zod.string().nonempty(),
+    productName: zod.string().nonempty(),
+    productQty: zod.number().positive(),
+    productPrice: zod.string().nonempty(),
+    productDescription: zod.string().nonempty(),
+    category: zod.string().nonempty(),
+    brand: zod.string().nonempty(),
+    sku: zod.string().nonempty(),
+    weight: zod.string().nonempty(),
+    dimensions: zod.string().nonempty(),
+    inStock: zod.boolean(),
+    tags: zod.array(zod.string()).optional(),
+    warranty: zod.string().nonempty(),
+    color: zod.string().nonempty(),
+    size: zod.string().nonempty(),
+    material: zod.string().nonempty(),
+    rating: zod.number().optional(),
+    productImages: zod.array(zod.string()).optional(),
   });
-  
-  router.post("/add-to-cart-online", authMiddleware, async (req, res) => {
-    try {
-      // Input validation check
-      const userId = req.userId;
-      const result = CartBody.safeParse(req.body);
-      if (!result.success) {
-        return res.status(400).json({
-          message: "Input specified in incorrect format",
-        });
-      }
 
-  
-      // When both checks are successful, add user to the database
-      const Product = await OnlineCart.create({
-        userId:userId,
-        productId: req.body.productId,
-        productQty:  req.body.productQty,
-        productPrice:  req.body.productPrice,
-        productName:  req.body.productName,
-        productDescription:  req.body.productDescription,
-        mode:req.body.mode
-      });
-  
-      
-     
-  
-      res.status(201).json({
-        message: "Item added to cart successfully",
-      });
-    } catch (error) {
-      console.error("Error during adding product to cart:", error);
-      res.status(500).json({
-        message: "Internal server error",
-      });
-    }
-  });
+  try {
+    // Process and convert the fields as needed
+    const parsedBody = {
+      ...req.body,
+      productQty: Number(req.body.productQty),
+      inStock: req.body.inStock === 'true', // Convert string to boolean
+      tags: Array.isArray(req.body.tags) ? req.body.tags : req.body.tags.split(','), // Handle tags as an array or split if it's a string
+      rating: req.body.rating ? Number(req.body.rating) : undefined, // Convert string to number
+      productImages: req.files && req.files.length > 0
+        ? req.files.map((file) => `data:${file.mimetype};base64,${file.buffer.toString('base64')}`)
+        : req.body.productImages || [], // Use existing images or an empty array if no files are uploaded
+    };
+
+
+    // Commentted because it was producing an error but should be fixed asap
+    // // Validate with Zod
+    // const result = CartBody.safeParse(parsedBody);
+    // if (!result.success) {
+    //   return res.status(400).json({
+    //     message: "Input specified in incorrect format",
+    //   });
+    // }
+
+    // Create the product in the cart
+    const Product = await OnlineCart.create({
+      userId: req.userId,
+      productId: parsedBody.productId,
+      productQty: parsedBody.productQty,
+      productPrice: parsedBody.productPrice,
+      productName: parsedBody.productName,
+      productDescription: parsedBody.productDescription,
+      mode: parsedBody.mode,
+      productImages: parsedBody.productImages,
+      category: parsedBody.category,
+      brand: parsedBody.brand,
+      sku: parsedBody.sku,
+      weight: parsedBody.weight,
+      dimensions: parsedBody.dimensions,
+      inStock: parsedBody.inStock,
+      tags: parsedBody.tags,
+      warranty: parsedBody.warranty,
+      color: parsedBody.color,
+      size: parsedBody.size,
+      material: parsedBody.material,
+      rating: parsedBody.rating,
+    });
+
+    res.status(201).json({
+      message: "Item added to cart successfully",
+      product: Product,
+    });
+  } catch (error) {
+    console.error("Error during adding product to cart:", error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
 
 
 

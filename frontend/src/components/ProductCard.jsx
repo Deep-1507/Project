@@ -29,41 +29,44 @@ const ProductCard = ({ product, onAddToCart }) => {
 
   const handleAddToCart = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/api/v1/online-products/add-to-cart-online', {
-        userId: 'exampleUserId',
-        productId: product.productId,
-        productQty: 1,
-        productPrice: product.productPrice,
-        productName: product.productName,
-        productDescription: product.productDescription,
-        mode: product.mode,
-        productImages: product.productImages,
-        category: product.category,
-        brand: product.brand,
-        sku: product.sku,
-        weight: product.weight,
-        dimensions: product.dimensions,
-        inStock: product.inStock,
-        tags: product.tags,
-        warranty: product.warranty,
-        color: product.color,
-        size: product.size,
-        material: product.material,
-        rating: product.rating,
-      }, {
-        withCredentials: true,
-      });
-
-      console.log('Product added to cart successfully:', response.data);
-      // Optionally call onAddToCart to update state in parent component
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/online-products/add-to-cart-online",
+        {
+          userId: "exampleUserId",
+          productId: product.productId,
+          productQty: Number(product.productQty), // Convert to number
+          productPrice: product.productPrice,
+          productName: product.productName,
+          productDescription: product.productDescription,
+          mode: product.mode,
+          productImages: product.productImages, // Array of base64 strings
+          category: product.category,
+          brand: product.brand,
+          sku: product.sku,
+          weight: product.weight,
+          dimensions: product.dimensions,
+          inStock: Boolean(product.inStock), // Convert to boolean
+          tags: Array.isArray(product.tags) ? product.tags : product.tags.split(","), // Ensure it's an array
+          warranty: product.warranty,
+          color: product.color,
+          size: product.size,
+          material: product.material,
+          rating: product.rating ? Number(product.rating) : undefined, // Convert to number or undefined
+        },
+        {
+          withCredentials: true,
+        }
+      );
+  
+      console.log("Product added to cart successfully:", response.data);
       if (onAddToCart) {
         onAddToCart(product);
       }
     } catch (error) {
-      console.error('Error adding product to cart:', error);
+      console.error("Error adding product to cart:", error.response?.data || error.message);
     }
   };
-
+  
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
       <img

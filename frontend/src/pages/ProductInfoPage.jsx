@@ -29,15 +29,31 @@ const ProductInfoPage = () => {
 
   const handleAddToCart = async (product) => {
     try {
+      console.log(product);
       await axios.post(
         "http://localhost:3000/api/v1/online-products/add-to-cart-online",
         {
-          productId: product._id,
-          productQty: 1,
-          productPrice: product.productPrice,
-          productName: product.productName,
-          productDescription: product.productDescription,
-          mode: product.mode
+          userId: 'exampleUserId',
+        productId: product.productId,
+        productQty: 1,
+        productPrice: product.productPrice,
+        productName: product.productName,
+        productDescription: product.productDescription,
+        mode: product.mode,
+        productImages: product.productImages,
+        category: product.category,
+        brand: product.brand,
+        sku: product.sku,
+        weight: product.weight,
+        dimensions: product.dimensions,
+        inStock: product.inStock,
+        tags: product.tags,
+        warranty: product.warranty,
+        color: product.color,
+        size: product.size,
+        material: product.material,
+        rating: product.rating,
+
         },
         {
           headers: {
@@ -52,8 +68,21 @@ const ProductInfoPage = () => {
     }
   };
   
-  if (!product) return <div>Loading...</div>;
-
+  if (!product) return( 
+    <div>
+<Navbar
+     showCart={true}
+     showWishlist={true}
+     showAccount={true}
+     showDashboard={true}
+     showStoreDashboard={false}
+     showLogout={true}
+     showLogin={false}
+    />
+      <div>Loading...</div>;
+      <Footer/>
+    </div>
+)
   return (
     <>
     <Navbar
