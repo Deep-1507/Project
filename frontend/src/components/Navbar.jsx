@@ -2,6 +2,8 @@ import { Icon } from "@iconify/react";
 import { CustomButton } from "../components/CustomButton";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { MdStoreMallDirectory } from "react-icons/md";
+import storeIcon from '@iconify-icons/mdi/store';
 
 const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showStoreDashboard, showLogin , showLogout , showStoreLogin , showPdt}) => {
   const navigate = useNavigate();
@@ -58,12 +60,29 @@ const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showSto
         <div className="flex items-center space-x-6">
 
            {showDashboard && (
-            <div className="flex items-center space-x-1 cursor-pointer"
+ <div className="flex items-center space-x-1 cursor-pointer mr-4 bg-walmartYellow p-2 rounded-2xl"
+ onClick={() => navigate("/get-store-details")}
+ >
+ <Icon icon={storeIcon} width="24" color="white" />
+ 
+ <span className="text-white">Stores Near me</span>
+</div>
+          )
+
+          }
+
+           {showDashboard && (
+           
+          <div>
+          <div className="flex items-center space-x-1 cursor-pointer"
             onClick={() => navigate("/dashboard")}
             >
             <Icon icon="ri:dashboard-horizontal-fill" width="24" color="white" />
             <span className="text-white">Dashboard</span>
           </div>
+          </div>
+           
+           
            )}
 
          {showStoreDashboard && (
@@ -100,7 +119,9 @@ const Navbar = ({ showCart ,showWishlist , showAccount , showDashboard , showSto
           >
             <Icon icon="material-symbols:person" width="24" color="white" />
             <span className="text-white">My Account</span>
-          </div>)}
+          </div>
+        
+        )}
 
           {showPdt && (
             <div className="bg-white px-4 py-2 text-walmartBlue flex items-center justify-center rounded-full font-semibold cursor-pointer shadow-lg hover:bg-gray-100 transition duration-300">

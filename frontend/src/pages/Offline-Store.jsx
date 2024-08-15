@@ -107,7 +107,8 @@ export const OfflineStore = () => {
             <div className="p-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
-            <ProductCard key={product._id} product={product}/>
+            <ProductCard key={product._id} product={product} showTryOn={true} 
+            showBuyNow={true} />
           ))}
         </div>
       </div>
