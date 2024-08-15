@@ -16,6 +16,7 @@ import StoreAuth from './pages/StoreAuth';
 import HomePage from './pages/Homepage';
 import {AddProductoffline} from './pages/AddProduct-offline';
 import {AddProductonline} from './pages/AddProduct-online';
+import ProductInfoPage from './pages/ProductInfoPage';
 // import { Products } from "./pages/Products";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
           <Route path="/store-dashboard" element={< StoreDashBoard />} />
           <Route path="/store-billing-page" element={<BillingPage />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/product/:productId" element={<ProductInfoPage />} />
           {/* <Route path="/online-products" element={<Products />} /> */}
         </Routes>
       </Router>

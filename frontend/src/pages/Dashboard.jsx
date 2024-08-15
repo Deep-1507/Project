@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
-import { CustomButton } from "../components/CustomButton";
 
 export const Dashboard = () => {
   const [products, setProducts] = useState([]);
@@ -28,7 +27,6 @@ export const Dashboard = () => {
   
     fetchProducts();
   }, [enqueueSnackbar]);
-  
 
   const handleAddToCart = async (product) => {
     try {
@@ -62,7 +60,12 @@ export const Dashboard = () => {
       <div className="p-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
-            <ProductCard key={product._id} product={product} onAddToCart={handleAddToCart} />
+            <Link key={product._id} to={`/product/${product._id}`}>
+              <ProductCard 
+                product={product} 
+                onAddToCart={() => handleAddToCart(product)} 
+              />
+            </Link>
           ))}
         </div>
       </div>
