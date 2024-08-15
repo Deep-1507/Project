@@ -74,13 +74,17 @@ export const Cart = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products.map((product) => (
-              <ProductCard key={product._id} product={product}>
+              <ProductCard key={product._id} product={product} showTryOn={true} 
+              showBuyNow={true} >
                 <CustomButton
                   label="Remove from Cart"
                   onClick={() => handleDelete(product._id)}
                   className="ml-auto"
                 />
               </ProductCard>
+
+
+              
             ))}
           </div>
         )}

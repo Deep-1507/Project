@@ -57,13 +57,21 @@ export const Dashboard = () => {
       <div className="mb-3">
         <Navbar showCart={true} showWishlist={true} showAccount={true} showDashboard={true} showStoreDashboard={false} showLogout={true} showLogin={false} />
       </div>
+      
+
       <div className="p-8">
+      <div className="text-left font-bold mb-12 ">
+  <div className="text-5xl text-neutral-600">Discover Your Next Favorite!</div>
+  <div className="text-4xl">Explore our top picks just for you.</div>
+</div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
             <Link key={product._id} to={`/product/${product._id}`}>
               <ProductCard 
                 product={product} 
                 onAddToCart={() => handleAddToCart(product)} 
+                showAddToCart={true} 
+                showTryOn={true} 
               />
             </Link>
           ))}

@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Button } from '@mui/material';
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product, onAddToCart, showAddToCart, showTryOn, showBuyNow }) => {
   const imageUrl = product.productImages && product.productImages.length > 0
     ? product.productImages[0]
     : '/'; // Placeholder image if no image data
@@ -66,6 +66,11 @@ const ProductCard = ({ product, onAddToCart }) => {
       console.error("Error adding product to cart:", error.response?.data || error.message);
     }
   };
+
+  const handleBuyNow = () => {
+    // Implement the Buy Now functionality here
+    console.log("Buy Now clicked for:", product.productName);
+  };
   
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
@@ -81,22 +86,39 @@ const ProductCard = ({ product, onAddToCart }) => {
         <p className="text-gray-700 mb-2">{product.productDescription}</p>
         <p className="text-lg font-bold text-green-600 mb-4">Rs. {product.productPrice}</p>
         <div className="flex gap-2">
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={handleAddToCart} 
-            className="flex-1 transition-transform duration-300 hover:scale-105"
-          >
-            Add to Cart
-          </Button>
-          <Button 
-            variant="outlined" 
-            color="secondary" 
-            onClick={handleTryOn} 
-            className="flex-1 transition-transform duration-300 hover:scale-105"
-          >
-            Try On
-          </Button>
+
+        {showBuyNow && (
+            <Button 
+              variant="contained" 
+              color="success" 
+              onClick={handleBuyNow} 
+              className="flex-1 transition-transform duration-300 hover:scale-105"
+            >
+              Buy Now
+            </Button>
+          )}
+          
+          {showAddToCart && (
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={handleAddToCart} 
+              className="flex-1 transition-transform duration-300 hover:scale-105"
+            >
+              Add to Cart
+            </Button>
+          )}
+          {showTryOn && (
+            <Button 
+              variant="outlined" 
+              color="secondary" 
+              onClick={handleTryOn} 
+              className="flex-1 transition-transform duration-300 hover:scale-105"
+            >
+              Try On
+            </Button>
+          )}
+          
         </div>
       </div>
     </div>
