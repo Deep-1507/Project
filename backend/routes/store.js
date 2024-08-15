@@ -243,4 +243,46 @@ router.post('/create-session', async (req, res) => {
 //Route to send the details of the users to appear on the user's page according to searching
 
 
+router.get("/bulk", authMiddleware, async (req, res) => {
+  const filter = req.query.filter || "";
+  const userPositionIndex = req.query.userPositionIndex;
+  const userid = req.query.userid;
+
+  const users = await User.find({
+    $and: [
+      {
+        $or: [
+          {
+            firstName: {
+              $regex: filter,
+            },
+          },
+          {
+            lastName: {
+              $regex: filter,
+            },
+          },
+        ],
+      },
+      {
+        positionseniorityindex: { $lte: userPositionIndex },
+      },
+      {
+        _id: { $ne: userid },
+      },
+    ],
+  });
+
+  res.json({
+    user: users.map((user) => ({
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      _id: user._id,
+      position: user.position,
+      positionseniorityindex: user.positionseniorityindex,
+    })),
+  });
+});
+
 module.exports = router;

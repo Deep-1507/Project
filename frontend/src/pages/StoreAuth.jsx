@@ -13,7 +13,7 @@ const StoreAuth = () => {
   const [lastName, setLastname] = useState("");
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
-  const [uid, setUid] = useState("");
+  const [uid, setuid] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { enqueueSnackbar } = useSnackbar();

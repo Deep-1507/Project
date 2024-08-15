@@ -16,6 +16,8 @@ import StoreAuth from './pages/StoreAuth';
 import HomePage from './pages/Homepage';
 import {AddProductoffline} from './pages/AddProduct-offline';
 import {AddProductonline} from './pages/AddProduct-online';
+import {Getofflinestores} from './pages/Get-offline-stores';
+import {OfflineStore} from './pages/Offline-Store';
 // import { Products } from "./pages/Products";
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
           <Route path="/store-dashboard" element={< StoreDashBoard />} />
           <Route path="/store-billing-page" element={<BillingPage />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/get-store-details" element={<Getofflinestores />} />
+          <Route path="/:name-products" element={<OfflineStore />} />
           {/* <Route path="/online-products" element={<Products />} /> */}
         </Routes>
       </Router>

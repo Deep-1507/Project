@@ -107,10 +107,11 @@ const onlineCartSchema = new mongoose.Schema({
     },
     productId: {
         type: String,
-        unique: false,
-        trim: true,
-        lowercase: true,
-        minLength: 1
+        // unique: true
+        // trim: true,
+        // lowercase: true,
+        // minLength: 3,
+        // maxLength: 50
     },
     productQty: {
         type: Number,
@@ -135,12 +136,31 @@ const onlineCartSchema = new mongoose.Schema({
          trim:true,
          minLength: 1
      },
-     mode:{
-        type:String,
-        required:true,
-         trim:true,
-         minLength: 1
-     }
+     mode: {
+        type: String,
+        required: true, // Ensure this field is required if necessary
+        default: 'online', // Or set a default value
+      }, 
+     productImages: {
+        type: [String], // Array of image paths
+        required: true,
+      },
+      category: { type: String },
+  brand: { type: String },
+  sku: { type: String },
+  weight: { type: Number },
+  dimensions: {
+    length: { type: Number },
+    width: { type: Number },
+    height: { type: Number },
+  },
+  inStock: { type: Boolean, default: true },
+  tags: [{ type: String }],
+  warranty: { type: String },
+  color: { type: String },
+  size: { type: String },
+  material: { type: String },
+  rating: { type: Number, min: 0, max: 5 },
 },{
     collection:'Online-Cart' // Specify the collection name here
 });
@@ -183,14 +203,15 @@ const storeSchema = new mongoose.Schema({
 });
 
 
+
 const productSchemaOffline = new mongoose.Schema({
     storeId: {
         type: String,
-        required:true,
+        required: true,
     },
     productId: {
         type: String,
-        // unique: true
+        // unique: true,
         // trim: true,
         // lowercase: true,
         // minLength: 3,
@@ -199,7 +220,7 @@ const productSchemaOffline = new mongoose.Schema({
     productQty: {
         type: Number,
         required: true,
-        minLength: 1
+        min: 1 // Updated to min
     },
     productPrice: {
         type: String,
@@ -213,21 +234,75 @@ const productSchemaOffline = new mongoose.Schema({
         trim: true,
         minLength: 1
     },
-    productDescription:{
-         type:String,
-         required:true,
-         trim:true,
-         minLength: 1
-     },
-     mode:{
-        type:String,
-        required:true,
-         trim:true,
-         minLength: 1
-     }
-},{
-    collection:'Products-offline' // Specify the collection name here
+    productDescription: {
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 1
+    },
+    mode: {
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 1,
+        default: 'offline' // Default value if needed
+    },
+    productImages: {
+        type: [String], // Array of image paths
+        required: false, // Optional field, can be adjusted
+    },
+    category: {
+        type: String,
+        required: false // Optional field, can be adjusted
+    },
+    brand: {
+        type: String,
+        required: false // Optional field, can be adjusted
+    },
+    sku: {
+        type: String,
+        required: false // Optional field, can be adjusted
+    },
+    weight: {
+        type: Number,
+        required: false // Optional field, can be adjusted
+    },
+    dimensions: {
+        length: { type: Number, required: false },
+        width: { type: Number, required: false },
+        height: { type: Number, required: false },
+    },
+    inStock: {
+        type: Boolean,
+        default: true
+    },
+    tags: [{ type: String }],
+    warranty: {
+        type: String,
+        required: false // Optional field, can be adjusted
+    },
+    color: {
+        type: String,
+        required: false // Optional field, can be adjusted
+    },
+    size: {
+        type: String,
+        required: false // Optional field, can be adjusted
+    },
+    material: {
+        type: String,
+        required: false // Optional field, can be adjusted
+    },
+    rating: {
+        type: Number,
+        min: 0,
+        max: 5,
+        required: false // Optional field, can be adjusted
+    }
+}, {
+    collection: 'Products-offline' // Specify the collection name here
 });
+
 
 
 

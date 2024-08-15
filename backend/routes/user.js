@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const zod = require("zod");
-const { User } = require("../db");
+const { User, Stores } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 const bcrypt = require("bcrypt");
@@ -207,6 +207,34 @@ router.get("/bulk", authMiddleware, async (req, res) => {
       positionseniorityindex: user.positionseniorityindex,
     })),
   });
+});
+
+
+
+
+router.get("/get-store-details", authMiddleware, async (req, res) => {
+  const filter = req.query.filter || "";
+
+  try {
+    const stores = await Stores.find({
+      location: {
+        $regex: filter, 
+        $options: "i"
+      }
+    });
+
+    res.json({
+      user: stores.map((store) => ({
+        username: store.username,
+        firstName: store.firstName,
+        lastName: store.lastName,
+        _id: store._id,
+        location:store.location
+      })),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 module.exports = router;

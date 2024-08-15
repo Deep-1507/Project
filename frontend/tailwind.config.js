@@ -22,6 +22,7 @@ export default {
       colors :{
           walmartBlue: '#0071CE',
           walmartYellow: '#FFC120',
+          TryOnButtonColor: '#F0F600',
       },
       height:{
         '192':'45rem',
