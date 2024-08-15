@@ -1,13 +1,9 @@
 {% extends "base.html" %}
 
-{% block style %}
-
-{% endblock %}
-
 {% block content %}
 
 <!-- default body -->
-<div class="row">
+<div class="row scrollbar" style="margin-top: 100px;">
     <div class="col-6 col-md">
         {% if source_image %}
           <img src="{{ url_for('get_source_image', filename=source_image)}}" class="img-fluid img-box">
@@ -54,6 +50,18 @@
             </p>
             
             <div>
+                <style>
+                    .btn-outline-info {
+                        color: #0071CE; /* Text color */
+                        border-color: #0071CE; /* Outline color */
+                    }
+                
+                    .btn-outline-info:hover {
+                        background-color: #0071CE; /* Background color on hover */
+                        border-color: #0071CE; /* Keep outline color the same on hover */
+                        color: white; /* Text color on hover */
+                    }
+                </style>
                 {{ form.submit(class="btn btn-outline-info", disabled="True") }}
             </div>
             <!-- show loading on submit -->

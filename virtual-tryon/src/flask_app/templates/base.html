@@ -15,7 +15,7 @@
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base-template.css')}}">
-
+    
     {% block style %}
     {% endblock %}
 
@@ -24,29 +24,31 @@
   <body>
     <div class="main">
       <!-- navbar -->
-      <nav class="navbar navbar-light bg-white navbar-expand-md fixed-top">
-        <!-- <a class="navbar-brand" href="/">
-          <img src="" width=80 height=26 class="rounded">
-        </a> -->
+      <nav class="navbar navbar-light navbar-expand-md fixed-top" style="background-color: #0071CE; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);">
+        <a class="navbar-brand text-white font-bold" href="/">
+          <img src="{{ url_for('static', filename='images/walmart_logo.png')}}" width="42" height="40" class="rounded" alt="VTO">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
+      
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link text-white font-bold" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+              <a class="nav-link dropdown-toggle text-white font-bold" href="https://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
               <div class="dropdown-menu" aria-labelledby="dropdown01">
-                <a class="dropdown-item" href="{{ url_for('upload_profile_image', updateprofile=True, nextpage='home')}}">update Profile Image</a>
+                <a class="dropdown-item" href="{{ url_for('upload_profile_image', updateprofile=True, nextpage='home')}}">Update Profile Image</a>
               </div>
             </li>
           </ul>
         </div>
       </nav>
+      
+      
       <!-- body-content -->
       <main role="main" class="container">
 

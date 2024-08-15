@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row" style="margin-top: 30px;">
     <!-- show success flashes on top -->
     {% with messages = get_flashed_messages(category_filter=["success"]) %}
             {% if messages %}
@@ -28,10 +28,7 @@
         <li class="nav-item">
           <a class="nav-link" id="source-tab" data-toggle="tab" href="#source" role="tab" aria-controls="source" aria-selected="false">source Image</a>
         </li>
-        <li class="nav-item">
-            <!-- <a class="btn btn-outline-primary d-inline ml-3" href="{{ url_for('upload_profile_image', updateprofile=True, nextpage='tryon')}}">Update Profile</a> -->
-            <a class="btn btn-outline-primary d-inline ml-5" href="{{ url_for('upload_source_image')}}">Try Next</a>
-        </li>
+        
       </ul>
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">

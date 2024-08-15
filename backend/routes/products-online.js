@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require('mongoose');
 const { OnlineProduct } = require("../db");
+const{OnlineCart} = require("../db")
 const { authMiddleware } = require("../middleware");
 const multer = require("multer");
 const { GridFSBucket } = require('mongodb');
@@ -102,104 +103,72 @@ router.get("/get-online-products", async (req, res) => {
 });
 
 
+router.get('/get-online-product/:id', async (req, res) => {
+  const { id } = req.params;
 
-const CartBody = zod.object({
-  mode: zod.string().nonempty(),
-  productId: zod.string().nonempty(),
-  productQty: zod.number().positive(),
-  productPrice: zod.string().nonempty(),
-  productName: zod.string().nonempty(),
-  productDescription: zod.string().nonempty(),
-  productImages: zod.array(zod.string()).optional(), // Adjust according to your requirements
-  category: zod.string().optional(),
-  brand: zod.string().optional(),
-  sku: zod.string().optional(),
-  weight: zod.number().optional(),
-  dimensions: zod.object({
-    length: zod.number().optional(),
-    width: zod.number().optional(),
-    height: zod.number().optional(),
-  }).optional(),
-  inStock: zod.boolean().optional(),
-  tags: zod.array(zod.string()).optional(),
-  warranty: zod.string().optional(),
-  color: zod.string().optional(),
-  size: zod.string().optional(),
-  material: zod.string().optional(),
-  rating: zod.number().min(0).max(5).optional(),
-});
-
-router.post('/add-to-cart-online', authMiddleware, async (req, res) => {
   try {
-    // Input validation check
-    const userId = req.userId;
-    const result = CartBody.safeParse(req.body);
+    // Find the product by ID
+    const product = await OnlineProduct.findById(id);
 
-    if (!result.success) {
-      return res.status(400).json({
-        message: 'Input specified in incorrect format',
-        errors: result.error.errors,
-      });
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
     }
 
-    // When validation is successful, add item to the cart
-    const {
-      mode,
-      productId,
-      productQty,
-      productPrice,
-      productName,
-      productDescription,
-      productImages,
-      category,
-      brand,
-      sku,
-      weight,
-      dimensions,
-      inStock,
-      tags,
-      warranty,
-      color,
-      size,
-      material,
-      rating,
-    } = result.data;
-
-    const cartItem = new OnlineCart({
-      userId,
-      productId,
-      productQty,
-      productPrice,
-      productName,
-      productDescription,
-      mode,
-      productImages,
-      category,
-      brand,
-      sku,
-      weight,
-      dimensions,
-      inStock,
-      tags,
-      warranty,
-      color,
-      size,
-      material,
-      rating,
-    });
-
-    await cartItem.save();
-
-    res.status(201).json({
-      message: 'Item added to cart successfully',
-    });
+    // Send the product data as a response
+    res.json(product);
   } catch (error) {
-    console.error('Error during adding product to cart:', error);
-    res.status(500).json({
-      message: 'Internal server error',
-    });
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
+
+
+
+  const CartBody = zod.object({
+    mode:zod.string(),
+    productId: zod.string(),
+    productQty: zod.number(),
+    productPrice: zod.string(),
+    productName: zod.string().min(1),
+    productDescription: zod.string().min(1)
+  });
+  
+  router.post("/add-to-cart-online", authMiddleware, async (req, res) => {
+    try {
+      // Input validation check
+      const userId = req.userId;
+      const result = CartBody.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({
+          message: "Input specified in incorrect format",
+        });
+      }
+
+  
+      // When both checks are successful, add user to the database
+      const Product = await OnlineCart.create({
+        userId:userId,
+        productId: req.body.productId,
+        productQty:  req.body.productQty,
+        productPrice:  req.body.productPrice,
+        productName:  req.body.productName,
+        productDescription:  req.body.productDescription,
+        mode:req.body.mode
+      });
+  
+      
+     
+  
+      res.status(201).json({
+        message: "Item added to cart successfully",
+      });
+    } catch (error) {
+      console.error("Error during adding product to cart:", error);
+      res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  });
 
 
 
