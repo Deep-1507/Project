@@ -89,10 +89,6 @@ Follow these steps to set up the project:
 - Deependra Kumar (github id - https://github.com/Deependra-K)
 - Ritu Verma (github id - https://github.com/Ritu29verma)
 
-### License
-
-This project is licensed under the MIT License.
-
 ### Acknowledgments
 
 We would like to thank the creators of the DeepFashion-MultiModal dataset and the open-source community for their invaluable resources that made this project possible.
